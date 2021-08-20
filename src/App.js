@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {Container} from '@material-ui/core';
+
+import { AuthProvider } from './contexts/AuthContext';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
+import Home from './components/pages/Home';
+import PrivateRoute from './components/helpers/PrivateRoute';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Router>
+        <AuthProvider>
+          <Switch>
+            <Route path='/login' component={Login}/>
+            <Route path='/signup' component={Signup}/>
+            <PrivateRoute path='/home' component={Home}/>
+          </Switch>
+        </AuthProvider>
+      </Router>
+    </Container>
   );
 }
 
