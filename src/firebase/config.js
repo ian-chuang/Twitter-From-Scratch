@@ -18,5 +18,4 @@ const auth = app.auth();
 const firestore = app.firestore();
 const storage = app.storage();
 
-export { auth, firestore, storage };
-export default app;
+export { app, auth, firestore, storage };
