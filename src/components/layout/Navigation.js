@@ -11,8 +11,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import Typography from '@material-ui/core/Typography'
 import Hidden from '@material-ui/core/Hidden'
-import IconButton from '@material-ui/core/IconButton'
 import CreateIcon from '@material-ui/icons/Create';
+import CreateTweetModal from './CreateTweetModal';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -45,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(2),
     },
     tweetButtonLg : {
-        marginTop: theme.spacing(1.5),
+        marginTop: theme.spacing(3),
+        paddingTop: theme.spacing(1.5),
+        paddingBottom: theme.spacing(1.5),
         fontSize: 16,
         width: '100%',
     },
@@ -58,6 +60,16 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation() {
     const classes = useStyles();
     const history = useHistory();
+
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleLogout = () => {
         auth.signOut()
@@ -74,7 +86,7 @@ export default function Navigation() {
     ]
 
     return (
-  
+        <>
             <div className={classes.root}>
                 
                 <RoundButton className={classes.logo}><TwitterIcon style={{ fontSize: 32 }}/></RoundButton>
@@ -92,12 +104,15 @@ export default function Navigation() {
                     </RoundButton>
                 ))}
                 <Hidden mdDown>
-                    <RoundButton className={classes.tweetButtonLg} color="primary" variant="contained" size="large">Tweet</RoundButton>
+                    <RoundButton onClick={handleOpen} className={classes.tweetButtonLg} color="primary" variant="contained" size="large">Tweet</RoundButton>
                 </Hidden>
                 <Hidden lgUp>
-                    <RoundButton className={classes.tweetButtonSm} color="primary" variant="contained"><CreateIcon style={{ fontSize: 35 }}/></RoundButton>
+                    <RoundButton onClick={handleOpen} className={classes.tweetButtonSm} color="primary" variant="contained"><CreateIcon style={{ fontSize: 35 }}/></RoundButton>
                 </Hidden>
                 
             </div>
+
+            <CreateTweetModal handleClose={handleClose} open={open}/>
+        </>
     )
 }

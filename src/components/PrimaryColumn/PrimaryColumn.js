@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -8,20 +9,20 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         minHeight: '100vh',
         maxWidth: '38rem',
-        borderRight: '1px solid',
-        borderRightColor: theme.palette.grey[800],
-        borderLeft: '1px solid',
-        borderLeftColor: theme.palette.grey[800],
     }
 }))
 
-export default function PrimaryColumn({children}) {      
+export default function PrimaryColumn({children, divider=true}) {      
 
     const classes = useStyles()
 
     return (
-        <div className={classes.root}>
-            {children}
-        </div>
+        <>
+            {divider && <Divider orientation="vertical" flexItem />}
+            <div className={classes.root}>
+                {children}
+            </div>
+            {divider && <Divider orientation="vertical" flexItem />}
+        </>
     )
 }

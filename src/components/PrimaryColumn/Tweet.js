@@ -8,6 +8,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import RoundButton from "../layout/RoundButton";
+import Divider from '@material-ui/core/Divider'
 
 import timeDifference from "../../services/timeDifference";
 
@@ -16,13 +17,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "flex-start",
     padding: theme.spacing(2, 2),
-    borderBottom: "solid 1px",
-    borderBottomColor: theme.palette.grey[800],
   },
   tweetInfo: {
     display: "flex",
     gap: theme.spacing(0.5),
     marginBottom: theme.spacing(1),
+  },
+  tweetMessage: {
+    whiteSpace: 'pre-line',
   },
   tweetButton: {
     marginLeft: "auto",
@@ -33,8 +35,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tweet({ tweet }) {
+export default function Tweet({ tweet, divider=true }) {
   const classes = useStyles();
+
+  console.log(tweet.message)
 
   const tweetOptions = [
     { text: "Reply", icon: <ChatBubbleOutlineIcon />, action: null },
@@ -46,44 +50,47 @@ export default function Tweet({ tweet }) {
   return (
     <>
       {tweet && (
-        <div className={classes.tweet}>
-          <Avatar>I</Avatar>
-          <Box ml={2} width="100%">
-            <Box className={classes.tweetInfo}>
-              <Typography variant="body2" color="textPrimary" component={'span'}>
-                <Box fontWeight="bold">Ian Chuang</Box>
-              </Typography>
-              {tweet.timestamp && [
-                "@icheester",
-                "·",
-                timeDifference(tweet.timestamp.toDate()),
-              ].map((info, i) => (
-                <Typography key={i} variant="body2" color="textSecondary" component={'span'}>
-                  {info}
+        <>
+          <div className={classes.tweet}>
+            <Avatar>I</Avatar>
+            <Box ml={2} width="100%">
+              <Box className={classes.tweetInfo}>
+                <Typography variant="body2" color="textPrimary" component={'span'}>
+                  <Box fontWeight="bold">Ian Chuang</Box>
                 </Typography>
-              ))}
-            </Box>
+                {tweet.timestamp && [
+                  "@icheester",
+                  "·",
+                  timeDifference(tweet.timestamp.toDate()),
+                ].map((info, i) => (
+                  <Typography key={i} variant="body2" color="textSecondary" component={'span'}>
+                    {info}
+                  </Typography>
+                ))}
+              </Box>
 
-            <Typography variant="body2" color="textPrimary">
-              {tweet.message}
-            </Typography>
+              <Typography variant="body2" color="textPrimary" className={classes.tweetMessage}>
+                {tweet.message}
+              </Typography>
 
-            <Box display="flex" alignItems="center" mt={1}>
-              {tweetOptions.map((option, i) => (
-                <Box width="100%" key={i}>
-                  <RoundButton
-                    color="primary"
-                    startIcon={option.icon}
-                    aria-label={option.text}
-                    size="small"
-                  >
-                    {20}
-                  </RoundButton>
-                </Box>
-              ))}
+              <Box display="flex" alignItems="center" mt={1}>
+                {tweetOptions.map((option, i) => (
+                  <Box width="100%" key={i}>
+                    <RoundButton
+                      color="primary"
+                      startIcon={option.icon}
+                      aria-label={option.text}
+                      size="small"
+                    >
+                      {20}
+                    </RoundButton>
+                  </Box>
+                ))}
+              </Box>
             </Box>
-          </Box>
-        </div>
+          </div>
+          {divider && <Divider/>}
+        </>
       )}
     </>
   );

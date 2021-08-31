@@ -27,6 +27,7 @@ const theme = createTheme({
       default: '#000000',
       paper: '#15181c',
     },
+    divider: 'rgba(255,255,255,0.20)'
   }
 });
 
