@@ -7,23 +7,51 @@ import HomeIcon from '@material-ui/icons/Home';
 import PublicIcon from '@material-ui/icons/Public';
 import PersonIcon from '@material-ui/icons/Person';
 import SettingsIcon from '@material-ui/icons/Settings';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import Typography from '@material-ui/core/Typography'
 import Hidden from '@material-ui/core/Hidden'
+import IconButton from '@material-ui/core/IconButton'
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({
-    list : {
-        padding: theme.spacing(1, 2, 1 , 2),
+
+    root : {
+        padding: theme.spacing(1, 2, 1, 0),
         maxWidth: '15rem',
-        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: theme.spacing(.5),
+        [theme.breakpoints.up('lg')] : {
+            flexGrow: 1,
+            alignItems: 'flex-start',
+        },
+        [theme.breakpoints.down('md')] : {
+            alignItems: 'center',
+        }  
     },
-    tweetButton : {
-        marginTop: theme.spacing(1),
+    logo: {
+        padding: theme.spacing(1.5),
+    },
+    navLink: {
+        [theme.breakpoints.up('lg')] : {
+            padding: theme.spacing(1.5, 2.5, 1.5, 1.5),
+        },
+        [theme.breakpoints.down('md')] : {
+            padding: theme.spacing(1.5),
+        }  
+    },
+    navText: {
+        marginLeft: theme.spacing(2),
+    },
+    tweetButtonLg : {
+        marginTop: theme.spacing(1.5),
+        fontSize: 16,
         width: '100%',
+    },
+    tweetButtonSm : {
+        marginTop: theme.spacing(1.5),
+        padding: theme.spacing(1.5),
     }
 }))
 
@@ -46,26 +74,30 @@ export default function Navigation() {
     ]
 
     return (
-        <List className={classes.list}>
-            <ListItem>
-                <ListItemIcon><TwitterIcon style={{ fontSize: 27 }}/></ListItemIcon>
-            </ListItem>
-            {menuItems.map((item, index) => (
-                <ListItem button key={index} onClick={item.onClick}>
-                    <ListItemIcon>
+  
+            <div className={classes.root}>
+                
+                <RoundButton className={classes.logo}><TwitterIcon style={{ fontSize: 32 }}/></RoundButton>
+                {menuItems.map((item, i) => (
+                    <RoundButton key={i} onClick={item.onClick} className={classes.navLink}>
                         {React.cloneElement(
                             item.icon,
                             {
-                                style: {fontSize: 27}
+                                style: {fontSize: 32}
                             }
                         )}
-                    </ListItemIcon>
-                    <Hidden mdDown>
-                        <Typography variant="h6">{item.text}</Typography>
-                    </Hidden>
-                </ListItem>
-            ))}
-            <RoundButton className={classes.tweetButton} size="large">Tweet</RoundButton>
-        </List>
+                        <Hidden mdDown>
+                            <Typography className={classes.navText} variant="h6">{item.text}</Typography>
+                        </Hidden>
+                    </RoundButton>
+                ))}
+                <Hidden mdDown>
+                    <RoundButton className={classes.tweetButtonLg} color="primary" variant="contained" size="large">Tweet</RoundButton>
+                </Hidden>
+                <Hidden lgUp>
+                    <RoundButton className={classes.tweetButtonSm} color="primary" variant="contained"><CreateIcon style={{ fontSize: 35 }}/></RoundButton>
+                </Hidden>
+                
+            </div>
     )
 }

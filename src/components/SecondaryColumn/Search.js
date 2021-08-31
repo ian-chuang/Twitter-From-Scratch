@@ -20,7 +20,6 @@ export default function Search({children}) {
         <Paper className={classes.root}>
             <form>
                 <InputBase
-                    variant="filled"
                     placeholder="Search Twitter..."
                     type="text"
                     startAdornment={

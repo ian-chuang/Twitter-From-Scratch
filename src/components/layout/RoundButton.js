@@ -8,14 +8,15 @@ const useStyles = makeStyles((theme) => ({
        borderRadius: '9999px',
        textTransform: 'none',
        fontWeight: 600,
+       minWidth: 'auto',
    }
 }))
 
-export default function RoundButton({children, variant="contained", color="primary", className="", ...other}) {      
+export default function RoundButton({children, className="", ...other}) {      
 
     const classes = useStyles()
 
     return (
-        <Button className={clsx(classes.button, className)} color={color} variant={variant} {...other}>{children}</Button>
+        <Button className={clsx(classes.button, className)} {...other}>{children}</Button>
     )
 }

@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,6 +43,13 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.background,
     backgroundSize: "cover",
     backgroundPosition: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageLogo: {
+    width: '100%',
+    maxWidth: '20rem',
   },
   auth: {
     margin: theme.spacing(8, 4),
@@ -92,8 +100,10 @@ export default function Login() {
     <>
     
       <Grid container component="main" className={classes.root}>
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
-        <Grid item xs={12} sm={8} md={5} elevation={6} square>
+        <Grid item xs={false} sm={4} md={7} className={classes.image}>
+          <TwitterIcon className={classes.imageLogo}/>
+        </Grid>
+        <Grid item xs={12} sm={8} md={5} elevation={6}>
           <div className={classes.auth}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />

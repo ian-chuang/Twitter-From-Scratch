@@ -2,17 +2,18 @@ import React, {useEffect} from 'react'
 import { useHistory } from 'react-router';
 import { fetchUser, fetchUserTimeline } from '../../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { auth, firestore } from '../../firebase/config';
-import firebase from 'firebase/app';
+import { auth } from '../../firebase/config';
+
 
 import Navigation from '../layout/Navigation';
+import PrimaryColumn from '../PrimaryColumn/PrimaryColumn';
 import Header from '../layout/Header';
-import CreateTweet from '../tweets/CreateTweet';
-import Feed from '../tweets/Feed';
-import SecondaryColumn from '../secondary_column/SecondaryColumn';
-import Search from '../secondary_column/Search';
-import Activity from '../secondary_column/Activity';
-import FollowMenu from '../secondary_column/FollowMenu';
+import CreateTweet from '../PrimaryColumn/CreateTweet';
+import Timeline from '../PrimaryColumn/Timeline';
+import SecondaryColumn from '../SecondaryColumn/SecondaryColumn';
+import Search from '../SecondaryColumn/Search';
+import Activity from '../SecondaryColumn/Activity';
+import FollowMenu from '../SecondaryColumn/FollowMenu';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
@@ -22,17 +23,7 @@ import Box from '@material-ui/core/Box';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        maxWidth: '38rem',
-        flexGrow: 2,
-        borderRight: '1px solid',
-        borderRightColor: theme.palette.grey[800],
-        borderLeft: '1px solid',
-        borderLeftColor: theme.palette.grey[800],
+        justifyContent: 'center',
     },
 }))
 
@@ -47,31 +38,17 @@ export default function Home() {
     useEffect(()=> {
         dispatch(fetchUser());
         dispatch(fetchUserTimeline());
-    }, [])
-
-    
-
-    const handleLogout = () => {
-        auth.signOut()
-        .then(() => history.push('/login'))
-        .catch((err) => console.log(err))
-    }
-
-    
+    }, [])    
 
     return (
         <Container className={classes.root}>
             <Navigation/>
-            <Box className={classes.content}>
+
+            <PrimaryColumn>
                 <Header title="Home"/>
-
                 <CreateTweet/>
-
-                {timeline && 
-                    <Feed tweets={timeline}/>
-                }
-
-            </Box>
+                <Timeline tweets={timeline}/>
+            </PrimaryColumn>
 
             <SecondaryColumn>
                 <Search/>

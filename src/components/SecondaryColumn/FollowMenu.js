@@ -8,6 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import RoundButton from '../layout/RoundButton';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,15 +27,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function Activity({children}) {      
+export default function FollowMenu() {      
 
     const classes = useStyles()
 
-    const activity = [
-        {message: "SexyMemeLord69 followed you.", date: "Sat Aug 21 2021"},
-        {message: "Warlus followed you.", date: "Sat Aug 21 2021"},
-        {message: "Miles Zombie Stamp followed you.", date: "Sat Aug 21 2021"},
-        {message: "Rachit followed you.", date: "Sat Aug 21 2021"}
+    const followList = [
+        {name: "SexyMemeLord69", handle: "@69420DankGod"},
+        {name: "Warlus", handle: "@warlus-trades"},
     ]
 
     return (
@@ -41,21 +41,22 @@ export default function Activity({children}) {
             
             <List className={classes.list}>
                 <ListItem className={classes.listItem}>
-                    <Typography variant="h6">What's happening</Typography>
+                    <Typography variant="h6">Who to follow</Typography>
                 </ListItem>
-                {activity && activity.map((item, i) => (
-                    <>
-                        <ListItem key={i} className={classes.listItem}>
-                            <ListItemAvatar>
-                                <Avatar/>
-                            </ListItemAvatar>
-                            <ListItemText
-                                secondary={item.date}
-                            >
-                                <Typography variant="body2">{item.message}</Typography>
-                            </ListItemText>
-                        </ListItem>
-                    </>
+                {followList && followList.map((item, i) => (
+                    <ListItem key={i} className={classes.listItem} button>
+                        <ListItemAvatar>
+                            <Avatar/>
+                        </ListItemAvatar>
+                        <ListItemText
+                            secondary={item.handle}
+                        >
+                            <Typography variant="body2">{item.name}</Typography>
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                            <RoundButton size="small" color="secondary" variant="contained">Follow</RoundButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
                 ))}  
                 <ListItem className={classes.showMore} button>
                     <Link href="#" style={{textDecoration: 'none'}}>

@@ -20,6 +20,7 @@ export const fetchUserTimeline = () => {
     return (dispatch) => {
         firestore.collection('tweets')
         .where('parent', '==', null)
+        .orderBy('timestamp', 'desc')
         .onSnapshot(snapshot => {
             const timeline = snapshot.docs.map(doc => {
                 const data = doc.data();

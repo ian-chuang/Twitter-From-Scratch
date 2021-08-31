@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: 'solid 1px',
         borderBottomColor: theme.palette.grey[800],
     },
+    input : {
+        padding: theme.spacing(.5, 0),
+        marginBottom: theme.spacing(1)
+    },
     tweetButton: {
         marginLeft: 'auto',
     },
@@ -45,6 +49,7 @@ export default function CreateTweet() {
 
     const handleSendTweet = (e) => {
         e.preventDefault();
+        console.log(message);
         firestore.collection('tweets').add({
             uid: auth.currentUser.uid,
             message: message,
@@ -61,11 +66,11 @@ export default function CreateTweet() {
             <Avatar>I</Avatar>
 
             <Box display="flex" flexDirection="column" ml={2} width="100%">
-                <TextField
-                    variant="filled" label="What's happening?" type="text" onChange={e => setMessage(e.target.value)}
-                    multiline
+                <TextField className={classes.input}
+                    placeholder="What's happening?" type="text" onChange={e => setMessage(e.target.value)}
+                    multiline InputProps={{style: { fontSize: 20 }, disableUnderline: true }}
                 />
-                <Box display="flex" alignItems="center" mt={2}>
+                <Box display="flex" alignItems="center">
                     { tweetOptions.map((option, i) => (
                         <IconButton className={classes.iconButton} color="primary" aria-label={option.text} key={i}>
                             {React.cloneElement(
@@ -76,7 +81,7 @@ export default function CreateTweet() {
                             )}
                         </IconButton>
                     ))}
-                    <RoundButton className={classes.tweetButton} variant="contained" onClick={handleSendTweet}>Tweet</RoundButton>
+                    <RoundButton className={classes.tweetButton} color="primary" variant="contained" onClick={handleSendTweet}>Tweet</RoundButton>
                 </Box>
             </Box>
         </div>

@@ -4,10 +4,11 @@ import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        flexGrow: 1,
+        maxWidth: '22rem',
+        minWidth: '18rem',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
-        flexShrink: 1,
         padding: theme.spacing(2,2),
         gap: theme.spacing(2),
     }
