@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "20rem",
     display: "flex",
     flexDirection: "column",
-    padding: theme.spacing(2, 2),
+    padding: theme.spacing(2, 0, 2, 2),
     gap: theme.spacing(2),
   },
 }));

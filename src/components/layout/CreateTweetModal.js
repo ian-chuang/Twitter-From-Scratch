@@ -9,7 +9,10 @@ import Box from '@material-ui/core/Box'
 import CreateTweet from '../PrimaryColumn/CreateTweet';
 
 const useStyles = makeStyles((theme) => ({
-  modal : {
+  modal: {
+    overflowY:'auto',
+  },
+  content : {
     position: 'absolute',
     top: '5%',
     marginLeft: 'auto',
@@ -19,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '38rem',
     width: '100%',
     backgroundColor: theme.palette.background.default,
-    boxShadow: theme.shadows[5],
     borderRadius: '1rem',
   },
   closeButton : {
@@ -36,8 +38,9 @@ export default function CreateTweetModal({handleClose, open}) {
       open={open}
       onClose={handleClose}
       BackdropProps={{style: {backgroundColor: 'rgba(91, 112, 131, 0.4)'}}}
+      className={classes.modal}
     >
-      <div className={classes.modal}>
+      <div className={classes.content}>
         <Box p={1}>
           <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
             <CloseIcon />

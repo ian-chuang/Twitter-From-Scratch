@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import RoundButton from "../layout/RoundButton";
 import Divider from '@material-ui/core/Divider'
+import Image from "../layout/Image";
 
 import timeDifference from "../../services/timeDifference";
 
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     padding: theme.spacing(2, 2),
   },
+  content : {
+    marginLeft: theme.spacing(2),
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
   tweetInfo: {
     display: "flex",
     gap: theme.spacing(0.5),
@@ -25,9 +32,10 @@ const useStyles = makeStyles((theme) => ({
   },
   tweetMessage: {
     whiteSpace: 'pre-line',
+    marginBottom: theme.spacing(1),
   },
-  tweetButton: {
-    marginLeft: "auto",
+  tweetImage: {
+    margin: theme.spacing(.5, 0),
   },
   iconButton: {
     padding: theme.spacing(1),
@@ -51,9 +59,9 @@ export default function Tweet({ tweet, divider=true }) {
         <>
           <div className={classes.tweet}>
             <Avatar>I</Avatar>
-            <Box ml={2} width="100%">
+            <Box className={classes.content}>
               <Box className={classes.tweetInfo}>
-                <Typography variant="body2" color="textPrimary" component={'span'}>
+                <Typography variant="body2" color="textPrimary" component={'span'} noWrap={true}>
                   <Box fontWeight="fontWeightMedium">Ian Chuang</Box>
                 </Typography>
                 {tweet.timestamp && [
@@ -61,17 +69,19 @@ export default function Tweet({ tweet, divider=true }) {
                   "·",
                   timeDifference(tweet.timestamp.toDate()),
                 ].map((info, i) => (
-                  <Typography key={i} variant="body2" color="textSecondary" component={'span'}>
+                  <Typography key={i} variant="body2" color="textSecondary" component={'span'} noWrap={true}>
                     {info}
                   </Typography>
                 ))}
               </Box>
 
-              <Typography variant="body2" color="textPrimary" className={classes.tweetMessage}>
+              {tweet.message && tweet.message.length > 0  &&  <Typography variant="body2" color="textPrimary" className={classes.tweetMessage}>
                 {tweet.message}
-              </Typography>
+              </Typography>}
 
-              <Box display="flex" alignItems="center" mt={1}>
+              <Image src={tweet.imageUrl} className={classes.tweetImage}/>
+
+              <Box display="flex" alignItems="center">
                 {tweetOptions.map((option, i) => (
                   <Box width="100%" key={i}>
                     <RoundButton

@@ -52,7 +52,7 @@ export default function FollowMenu() {
                         <ListItemText
                             secondary={item.handle}
                         >
-                            <Typography variant="body2"><Box fontWeight="fontWeightMedium">{item.name}</Box></Typography>
+                            <Typography variant="body2" component={'span'}><Box fontWeight="fontWeightMedium">{item.name}</Box></Typography>
                         </ListItemText>
                         <ListItemSecondaryAction>
                             <RoundButton size="small" color="secondary" variant="contained">Follow</RoundButton>

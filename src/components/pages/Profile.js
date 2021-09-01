@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { fetchUser, fetchUserTimeline } from '../../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { auth } from '../../firebase/config';
-
+import { useParams } from 'react-router';
 
 import Navigation from '../layout/Navigation';
 import PrimaryColumn from '../PrimaryColumn/PrimaryColumn';
@@ -32,17 +32,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Home() {   
-    const {currentUser, timeline} = useSelector(state => state.userState)
-    
+export default function Profile() {   
+    const { handle } = useParams();
 
     const classes = useStyles()
-    const history = useHistory();
-    const dispatch = useDispatch();
 
     useEffect(()=> {
-        dispatch(fetchUser());
-        dispatch(fetchUserTimeline());
+
     }, [])    
 
     return (
@@ -50,9 +46,7 @@ export default function Home() {
             <Navigation/>
 
             <PrimaryColumn>
-                <Header title="Home"/>
-                <CreateTweet/>
-                <Timeline tweets={timeline}/>
+                <Header title={handle}/>
             </PrimaryColumn>
 
             <SecondaryColumn>

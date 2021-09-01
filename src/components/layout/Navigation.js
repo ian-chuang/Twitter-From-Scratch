@@ -22,8 +22,8 @@ import { toggleTheme } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(1, 2, 1, 0),
-    maxWidth: "15rem",
+    padding: theme.spacing(1, 2, 2, 0),
+    maxWidth: "16rem",
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(0.5),
@@ -95,7 +95,7 @@ export default function Navigation() {
     {
       text: "Profile",
       icon: <PersonIcon />,
-      onClick: () => history.push("/home"),
+      onClick: () => history.push("/profile/"),
     },
     {
       text: "Settings",
