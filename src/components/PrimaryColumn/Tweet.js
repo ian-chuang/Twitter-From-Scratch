@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Tweet({ tweet, divider=true }) {
   const classes = useStyles();
 
-  console.log(tweet.message)
-
   const tweetOptions = [
     { text: "Reply", icon: <ChatBubbleOutlineIcon />, action: null },
     { text: "Retweet", icon: <CachedIcon />, action: null },
@@ -56,7 +54,7 @@ export default function Tweet({ tweet, divider=true }) {
             <Box ml={2} width="100%">
               <Box className={classes.tweetInfo}>
                 <Typography variant="body2" color="textPrimary" component={'span'}>
-                  <Box fontWeight="bold">Ian Chuang</Box>
+                  <Box fontWeight="fontWeightMedium">Ian Chuang</Box>
                 </Typography>
                 {tweet.timestamp && [
                   "@icheester",

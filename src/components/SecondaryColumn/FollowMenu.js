@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import RoundButton from '../layout/RoundButton';
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,7 +52,7 @@ export default function FollowMenu() {
                         <ListItemText
                             secondary={item.handle}
                         >
-                            <Typography variant="body2">{item.name}</Typography>
+                            <Typography variant="body2"><Box fontWeight="fontWeightMedium">{item.name}</Box></Typography>
                         </ListItemText>
                         <ListItemSecondaryAction>
                             <RoundButton size="small" color="secondary" variant="contained">Follow</RoundButton>

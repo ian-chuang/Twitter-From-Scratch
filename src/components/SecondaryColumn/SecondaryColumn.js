@@ -1,28 +1,26 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Hidden from "@material-ui/core/Hidden";
+import StickyBox from "react-sticky-box";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        maxWidth: '22rem',
-        minWidth: '18rem',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: theme.spacing(2,2),
-        gap: theme.spacing(2),
-    }
-}))
+  root: {
+    flexGrow: 1,
+    maxWidth: "24rem",
+    minWidth: "20rem",
+    display: "flex",
+    flexDirection: "column",
+    padding: theme.spacing(2, 2),
+    gap: theme.spacing(2),
+  },
+}));
 
-export default function SecondaryColumn({children}) {      
+export default function SecondaryColumn({ children }) {
+  const classes = useStyles();
 
-    const classes = useStyles()
-
-    return (
-        <Hidden smDown>
-            <div className={classes.root}>
-                {children}
-            </div>
-        </Hidden>
-    )
+  return (
+    <Hidden smDown>
+      <StickyBox className={classes.root}>{children}</StickyBox>
+    </Hidden>
+  );
 }
