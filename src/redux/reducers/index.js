@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import { user } from './users'
+import userReducer from './user'
 import themeReducer from "./theme";
 
 const Reducers = combineReducers({
-    userState: user,
+    user: userReducer,
     theme: themeReducer,
 })
 

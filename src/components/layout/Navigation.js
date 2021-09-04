@@ -3,15 +3,15 @@ import { auth } from "../../firebase/config";
 import { useHistory } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import RoundButton from "./RoundButton";
-import HomeIcon from "@material-ui/icons/Home";
-import PublicIcon from "@material-ui/icons/Public";
-import PersonIcon from "@material-ui/icons/Person";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import HomeIcon from "@material-ui/icons/HomeRounded";
+import PublicIcon from "@material-ui/icons/PublicRounded";
+import PersonIcon from "@material-ui/icons/PersonRounded";
+import SettingsIcon from "@material-ui/icons/SettingsRounded";
+import ExitToAppIcon from "@material-ui/icons/ExitToAppRounded";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import BrightnessLowIcon from "@material-ui/icons/BrightnessLow";
-import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
-import BrightnessHighIcon from "@material-ui/icons/BrightnessHigh";
+import BrightnessLowIcon from "@material-ui/icons/BrightnessLowRounded";
+import BrightnessMediumIcon from "@material-ui/icons/BrightnessMediumRounded";
+import BrightnessHighIcon from "@material-ui/icons/BrightnessHighRounded";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import CreateIcon from "@material-ui/icons/Create";
@@ -69,6 +69,7 @@ export default function Navigation() {
 
   const [open, setOpen] = useState(false);
   const { type } = useSelector((state) => state.theme);
+  const { user } = useSelector((state) => state.user);
 
   const handleOpen = () => {
     setOpen(true);
@@ -85,7 +86,7 @@ export default function Navigation() {
       .catch((err) => console.log(err));
   };
 
-  const menuItems = [
+  let menuItems = [
     { text: "Home", icon: <HomeIcon />, onClick: () => history.push("/home") },
     {
       text: "Explore",
@@ -95,7 +96,7 @@ export default function Navigation() {
     {
       text: "Profile",
       icon: <PersonIcon />,
-      onClick: () => history.push("/profile/"),
+      onClick: () => history.push(`/profile/${user.username}`),
     },
     {
       text: "Settings",
@@ -116,6 +117,8 @@ export default function Navigation() {
     },
     { text: "Log out", icon: <ExitToAppIcon />, onClick: handleLogout },
   ];
+
+  if (!user) menuItems = [menuItems[1], menuItems[4]];
 
   return (
     <>
@@ -139,30 +142,32 @@ export default function Navigation() {
             </Hidden>
           </RoundButton>
         ))}
-        <Hidden mdDown>
-          <RoundButton
-            onClick={handleOpen}
-            className={classes.tweetButtonLg}
-            color="primary"
-            variant="contained"
-            size="large"
-          >
-            Tweet
-          </RoundButton>
-        </Hidden>
-        <Hidden lgUp>
-          <RoundButton
-            onClick={handleOpen}
-            className={classes.tweetButtonSm}
-            color="primary"
-            variant="contained"
-          >
-            <CreateIcon style={{ fontSize: 35 }} />
-          </RoundButton>
-        </Hidden>
+        {user && <>
+          <Hidden mdDown>
+            <RoundButton
+              onClick={handleOpen}
+              className={classes.tweetButtonLg}
+              color="primary"
+              variant="contained"
+              size="large"
+            >
+              Tweet
+            </RoundButton>
+          </Hidden>
+          <Hidden lgUp>
+            <RoundButton
+              onClick={handleOpen}
+              className={classes.tweetButtonSm}
+              color="primary"
+              variant="contained"
+            >
+              <CreateIcon style={{ fontSize: 35 }} />
+            </RoundButton>
+          </Hidden>
+        </>}
       </StickyBox>
 
-      <CreateTweetModal handleClose={handleClose} open={open} />
+      {user && <CreateTweetModal handleClose={handleClose} open={open} />}
     </>
   );
 }

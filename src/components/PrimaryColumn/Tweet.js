@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   tweet: {
     display: "flex",
     alignItems: "flex-start",
-    padding: theme.spacing(2, 2),
+    padding: theme.spacing(1.75, 2, 1, 2),
   },
   content : {
     marginLeft: theme.spacing(2),
@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
   },
   tweetMessage: {
     whiteSpace: 'pre-line',
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(.5),
   },
   tweetImage: {
-    margin: theme.spacing(.5, 0),
+    margin: theme.spacing(1, 0, .25, 0),
   },
   iconButton: {
     padding: theme.spacing(1),

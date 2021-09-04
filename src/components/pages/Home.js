@@ -1,9 +1,5 @@
-import React, {useEffect} from 'react'
-import { useHistory } from 'react-router';
-import { fetchUser, fetchUserTimeline } from '../../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
-import { auth } from '../../firebase/config';
-
+import React, {useEffect, useState} from 'react'
+import { firestore } from '../../firebase/config';
 
 import Navigation from '../layout/Navigation';
 import PrimaryColumn from '../PrimaryColumn/PrimaryColumn';
@@ -19,6 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box';
 
+import { useSelector } from 'react-redux';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,16 +31,23 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Home() {   
-    const {currentUser, timeline} = useSelector(state => state.userState)
-    
+    const [timeline, setTimeline] = useState(null); 
 
     const classes = useStyles()
-    const history = useHistory();
-    const dispatch = useDispatch();
 
     useEffect(()=> {
-        dispatch(fetchUser());
-        dispatch(fetchUserTimeline());
+        const unsubscribe = firestore.collection('tweets')
+        .where('parent', '==', null)
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+            setTimeline(snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return {id, ...data}
+            }))
+        })
+
+        return () => unsubscribe();
     }, [])    
 
     return (

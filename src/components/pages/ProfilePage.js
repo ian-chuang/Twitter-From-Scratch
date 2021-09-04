@@ -1,14 +1,11 @@
-import React, {useEffect} from 'react'
-import { useHistory } from 'react-router';
-import { fetchUser, fetchUserTimeline } from '../../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
-import { auth } from '../../firebase/config';
+import React, {useEffect, useState} from 'react'
+import { firestore } from '../../firebase/config';
 import { useParams } from 'react-router';
 
 import Navigation from '../layout/Navigation';
 import PrimaryColumn from '../PrimaryColumn/PrimaryColumn';
 import Header from '../PrimaryColumn/Header';
-import CreateTweet from '../PrimaryColumn/CreateTweet';
+import Profile from '../PrimaryColumn/Profile';
 import Timeline from '../PrimaryColumn/Timeline';
 import SecondaryColumn from '../SecondaryColumn/SecondaryColumn';
 import Search from '../SecondaryColumn/Search';
@@ -17,7 +14,6 @@ import FollowMenu from '../SecondaryColumn/FollowMenu';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
-import Box from '@material-ui/core/Box';
 
 
 
@@ -32,13 +28,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Profile() {   
-    const { handle } = useParams();
+export default function ProfilePage() {   
+    const { username } = useParams();
+    const [user, setUser] = useState(null);
 
     const classes = useStyles()
 
     useEffect(()=> {
+        const unsubscribe = firestore.collection('users')
+        .doc(username)
+        .onSnapshot(snapshot => {
+            setUser({...snapshot.data(), username: username})
+        })
 
+        return () => unsubscribe();
     }, [])    
 
     return (
@@ -46,7 +49,12 @@ export default function Profile() {
             <Navigation/>
 
             <PrimaryColumn>
-                <Header title={handle}/>
+                {user && 
+                    <>
+                        <Header backButton={true} title={user.name}/>
+                        <Profile user={user}/>
+                    </>
+                }  
             </PrimaryColumn>
 
             <SecondaryColumn>
