@@ -31,19 +31,22 @@ function App() {
   }, [])
 
   useEffect (async () => {
+    let unsubscribe = () => {}
     if (firebaseUser) {
       const username = await firestore.collection('uid')
       .doc(firebaseUser.uid).get()
       .then((snapshot) => snapshot.data().username)
       //get user info
-      const userInfo = await firestore.collection('users')
-      .doc(username).get().then((snapshot) => { return {...snapshot.data(), username : username}})
-      // set user
-      dispatch(setUser(userInfo));
+      unsubscribe = firestore.collection('users')
+      .doc(username).onSnapshot((snapshot) => { 
+        const userInfo = {...snapshot.data(), username : username}
+        dispatch(setUser(userInfo));
+      })
     }
     else {
       dispatch(setUser(null))
     }
+    return () => unsubscribe();
   }, [firebaseUser])
 
   return (

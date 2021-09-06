@@ -15,6 +15,7 @@ import firebase from "firebase/app";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
 import useStorage from "../../services/useStorage";
+import { useSelector } from "react-redux";
 
 const CHARACTER_LIMIT = 280;
 
@@ -30,6 +31,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginLeft: theme.spacing(2),
     gap: theme.spacing(2),
+  },
+  avatar: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+  },
+  textField : {
+    marginTop: theme.spacing(1),
   },
   iconButton: {
     padding: theme.spacing(1),
@@ -49,6 +57,7 @@ export default function CreateTweet({
 }) {
   const classes = useStyles();
 
+  const {user} = useSelector(state => state.user);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -72,13 +81,15 @@ export default function CreateTweet({
     setLoading(true);
 
     firestore.collection("tweets").add({
-      uid: auth.currentUser.uid,
+      username: user.username,
       message: message,
       parent: null,
       replies: [],
       imageUrl: await uploadImage(),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       likes: 0,
+      retweets: 0,
+      
     });
 
     setMessage("");
@@ -91,10 +102,11 @@ export default function CreateTweet({
   return (
     <>
       <form className={classes.root} onSubmit={handleSendTweet}>
-        <Avatar>I</Avatar>
+        <Avatar className={classes.avatar} src={user && (user.profilePictureURL ?  user.profilePictureURL : '/profile_picture.png')}>I</Avatar>
 
         <Box className={classes.content}>
           <TextField
+            className={classes.textField}
             placeholder="What's happening?"
             type="text"
             onChange={handleTextField}

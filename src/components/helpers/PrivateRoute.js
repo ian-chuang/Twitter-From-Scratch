@@ -6,8 +6,6 @@ export default function PrivateRoute({component: Component, ...rest}) {
     
     const {firebaseUser} = useSelector(state=> state.user);
 
-    console.log(firebaseUser);
-
     return (
         <Route
             {...rest}

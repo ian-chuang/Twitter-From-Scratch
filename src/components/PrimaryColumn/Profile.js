@@ -6,6 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import RoundButton from "../layout/RoundButton";
 import Divider from '@material-ui/core/Divider'
 import TodayIcon from '@material-ui/icons/Today';
+import EditProfileButton from '../layout/EditProfileButton';
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +55,7 @@ export default function Profile({user}) {
 
   const classes = useStyles();
 
-  const currentUser = useSelector(state => state.user);
+  const {user:currentUser} = useSelector(state => state.user);
 
   const headerImageURL = user.headerImageURL ? `url(${user.headerImageURL})` : null;
 
@@ -67,7 +68,7 @@ export default function Profile({user}) {
 
   return (
     <>
-      {user && 
+      {user && currentUser &&
         <>
           <Box width="100%">
             <Box className={classes.header} style={{backgroundImage: headerImageURL}}><Box width="100%" pb="33%"></Box></Box>
@@ -75,7 +76,7 @@ export default function Profile({user}) {
               <Box>
                 <Box className={classes.pictureContainer}>
                   <Avatar className={classes.profilePicture} src={user.profilePictureURL}/>
-                  {currentUser.username === user.username && <RoundButton variant="outlined" color="secondary">Edit profile</RoundButton>}
+                  {currentUser.username === user.username && <EditProfileButton/>}
                 </Box>
                 <Box fontWeight="fontWeightBold" fontSize="h6.fontSize">{user.name}</Box>
                 <Typography color="textSecondary" variant="body2">{`@${user.username}`}</Typography>

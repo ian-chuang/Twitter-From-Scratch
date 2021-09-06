@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react'
 import {storage} from '../firebase/config'
 import { v4 as uuidv4 } from 'uuid';
 
-export default function useStorage() {
+export default function useStorage(defaultPreview=null) {
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (!file) {
-      setPreview(null);
+      setPreview(defaultPreview);
       return;
     }
 

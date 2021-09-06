@@ -8,7 +8,10 @@ export default function timeDifference(timestamp) {
     let current = new Date();
     let elapsed = current - timestamp;
 
-    if (elapsed < msPerMinute) {
+    if (elapsed < 0) {
+        return '0s';
+    }
+    else if (elapsed < msPerMinute) {
          return Math.round(elapsed/1000) + 's';   
     }
     else if (elapsed < msPerHour) {

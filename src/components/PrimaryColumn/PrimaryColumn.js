@@ -5,10 +5,11 @@ import Divider from '@material-ui/core/Divider'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        flexGrow: 2,
+        flexGrow: 1,
         flexDirection: 'column',
         minHeight: '100vh',
         maxWidth: '38rem',
+        width: '100%',
     }
 }))
 

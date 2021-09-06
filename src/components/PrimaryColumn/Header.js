@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
     backButton: {
         marginRight: theme.spacing(2),
+        padding: theme.spacing(1),
     }
 }))
 
@@ -28,7 +29,7 @@ export default function Header({ title, divider=true, backButton=false }) {
         <StickyBox className={classes.root}>
             <Box py={1} px={2} display="flex" alignItems="center">
                 {backButton &&
-                    <IconButton className={classes.backButton} size="small" onClick={history.goBack}>
+                    <IconButton className={classes.backButton} onClick={history.goBack}>
                         <ArrowBackRoundedIcon fontSize="small"/>
                     </IconButton>
                 }

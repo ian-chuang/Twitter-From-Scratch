@@ -8,7 +8,6 @@ import Modal from '@material-ui/core/Modal';
 const useStyles = makeStyles((theme) => ({
   image : {
     width: '100%',
-    maxHeight: "18rem",
     objectFit: "cover",
     borderRadius: "1rem",   
     cursor: 'pointer',
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Image({ src, removeImage=null, ...props}) {
+export default function Image({ src, removeImage=null, contain=true, showModal=true, ...props}) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -55,12 +54,13 @@ export default function Image({ src, removeImage=null, ...props}) {
       {src && (
         <>
           <Box position="relative" {...props}>
-            <img src={src} alt="Twitter Image..." className={classes.image} onClick={handleOpenModal}/>
+            <img src={src} alt="Twitter Image..." className={classes.image} onClick={handleOpenModal} style={contain && {maxHeight: '18rem'}}/>
             {removeImage && <RoundButton className={classes.closeButton} variant="contained" onClick={removeImage}>
               <CloseIcon fontSize="small"/>
             </RoundButton>}
           </Box>
 
+          {showModal &&
           <Modal
             open={open}
             onClose={handleCloseModal}
@@ -74,6 +74,7 @@ export default function Image({ src, removeImage=null, ...props}) {
               </RoundButton>
             </Box>
           </Modal>
+          }
         </>
       )}
     </>
