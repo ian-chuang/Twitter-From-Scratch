@@ -1,14 +1,14 @@
-export const changeUser = (user) => {
+export const setUser = (user) => {
     return {
-        type: 'CHANGE_USER',
+        type: 'SET_USER',
         payload: user,
     }
 }
 
-export const changeLoading = (loading) => {
+export const setFirebaseUser = (firebaseUser) => {
     return {
-        type: 'CHANGE_LOADING',
-        payload: loading,
+        type: 'SET_FIREBASE_USER',
+        payload: firebaseUser,
     }
 }
 
@@ -17,3 +17,5 @@ export const toggleTheme = () => {
         type: 'TOGGLE_THEME'
     }
 }
+
+

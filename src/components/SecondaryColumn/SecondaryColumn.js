@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
 import StickyBox from "react-sticky-box";
+import Copyright from "../layout/Copyright";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,10 @@ export default function SecondaryColumn({ children }) {
 
   return (
     <Hidden smDown>
-      <StickyBox className={classes.root}>{children}</StickyBox>
+      <StickyBox className={classes.root}>
+        {children}
+        <Copyright textAlign="center"/>
+      </StickyBox>
     </Hidden>
   );
 }

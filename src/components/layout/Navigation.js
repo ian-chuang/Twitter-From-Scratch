@@ -69,7 +69,7 @@ export default function Navigation() {
 
   const [open, setOpen] = useState(false);
   const { type } = useSelector((state) => state.theme);
-  const { user } = useSelector((state) => state.user);
+  const {user} = useSelector((state) => state.user);
 
   const handleOpen = () => {
     setOpen(true);

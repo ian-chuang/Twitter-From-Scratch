@@ -51,11 +51,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile({user}) {
+
   const classes = useStyles();
 
-  const {user:currentUser} = useSelector(state => state.user);
-
-  const temp = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
+  const currentUser = useSelector(state => state.user);
 
   const headerImageURL = user.headerImageURL ? `url(${user.headerImageURL})` : null;
 

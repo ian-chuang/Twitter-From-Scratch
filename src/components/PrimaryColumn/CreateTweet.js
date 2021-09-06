@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import RoundButton from "../layout/RoundButton";
 import ImageIcon from "@material-ui/icons/Image";
@@ -10,11 +10,11 @@ import MoodIcon from "@material-ui/icons/Mood";
 import PollIcon from "@material-ui/icons/Poll";
 import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { firestore, auth, storage } from "../../firebase/config";
+import { firestore, auth } from "../../firebase/config";
 import firebase from "firebase/app";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
-import { v4 as uuidv4 } from 'uuid';
+import useStorage from "../../services/useStorage";
 
 const CHARACTER_LIMIT = 280;
 
@@ -49,11 +49,10 @@ export default function CreateTweet({
 }) {
   const classes = useStyles();
 
-  const messageRef = useRef();
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [preview, setPreview] = useState(null);
-  const [file, setFile] = useState(null);
+  const [preview, file, handleInputImage, uploadImage, removeImage] = useStorage();
 
   const tweetOptions = [
     { text: "GIF", icon: <GifIcon />, action: null },
@@ -67,61 +66,24 @@ export default function CreateTweet({
     setProgress((value.length / CHARACTER_LIMIT) * 100);
   };
 
-  const handleInputImage = (e) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setFile(null)
-      return
-    }
-    setFile(e.target.files[0]);
-    e.target.value = "";
-  }
-
-  useEffect(() => {
-    if (!file) {
-      setPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(file)
-    setPreview(objectUrl)
-
-    return () => URL.revokeObjectURL(objectUrl)
-  }, [file])
-
-  const handleSendTweet = (e) => {
+  const handleSendTweet = async (e) => {
     e.preventDefault();
 
-    const addTweet = (imageUrl) => {
-      firestore.collection("tweets").add({
-        uid: auth.currentUser.uid,
-        message: message,
-        parent: null,
-        replies: [],
-        imageUrl: imageUrl,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        likes: 0,
-      });
-    }
+    setLoading(true);
 
-    if (file && preview) {
-      const storageRef = storage.ref(`${uuidv4()}-${file.name}`);
-
-      storageRef
-      .put(file)
-      .then( async () => {
-          const imageUrl = await storageRef.getDownloadURL();
-          addTweet(imageUrl);
-      })
-    }
-    else {
-      addTweet(null);
-    }
+    firestore.collection("tweets").add({
+      uid: auth.currentUser.uid,
+      message: message,
+      parent: null,
+      replies: [],
+      imageUrl: await uploadImage(),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      likes: 0,
+    });
 
     setMessage("");
     setProgress(0);
-    messageRef.current.value = "";
-    setPreview(null);
-    setFile(null);
+    setLoading(false);
 
     if (onSend) onSend();
   };
@@ -133,17 +95,18 @@ export default function CreateTweet({
 
         <Box className={classes.content}>
           <TextField
-            inputRef={messageRef}
             placeholder="What's happening?"
             type="text"
             onChange={handleTextField}
+            value={message}
             multiline
             InputProps={{ style: { fontSize: 20 }, disableUnderline: true }}
+            inputProps={{ maxLength: CHARACTER_LIMIT }}
             maxRows={20}
             minRows={preview ? 1 : minRows}
           />
 
-          <Image src={preview} setSrc={setPreview}/>
+          <Image src={preview} removeImage={removeImage}/>
 
           <Box display="flex" alignItems="center">
               
@@ -172,7 +135,7 @@ export default function CreateTweet({
               className={classes.progress}
               variant="determinate"
               value={Math.min(100, progress)}
-              color={progress > 100 ? "" : "primary"}
+              color="primary"
               size={30}
               thickness={5}
             />
@@ -180,7 +143,7 @@ export default function CreateTweet({
               type="submit"
               color="primary"
               variant="contained"
-              disabled={progress > 100 || (message.length === 0 && (!file || !preview)) }
+              disabled={(message.length === 0 && (!file || !preview)) || loading}
             >
               Tweet
             </RoundButton>

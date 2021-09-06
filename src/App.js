@@ -10,51 +10,57 @@ import PrivateRoute from "./components/helpers/PrivateRoute";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import {useSelector, useDispatch} from 'react-redux';
-import { changeUser, changeLoading } from "./redux/actions";
+import { setUser, setFirebaseUser } from "./redux/actions";
 import { firestore, auth } from "./firebase/config";
 
 function App() {
 
   const {theme} = useSelector(state => state.theme);
+  const {firebaseUser} = useSelector(state=> state.user);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      try {
-        //get username
-        const username = await firestore.collection('uid')
-        .doc(user.uid).get()
-        .then((snapshot) => snapshot.data().username)
-        //get user info
-        const userInfo = await firestore.collection('users')
-        .doc(username).get().then((snapshot) => { return {...snapshot.data(), username : username}})
-        // set user
-        dispatch(changeUser(userInfo));
-      }
-      catch {
-        dispatch(changeUser(null));
-      }
-       
-      dispatch(changeLoading(false));
+      dispatch(setFirebaseUser(user));
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [dispatch])
+  }, [])
+
+  useEffect (async () => {
+    if (firebaseUser) {
+      const username = await firestore.collection('uid')
+      .doc(firebaseUser.uid).get()
+      .then((snapshot) => snapshot.data().username)
+      //get user info
+      const userInfo = await firestore.collection('users')
+      .doc(username).get().then((snapshot) => { return {...snapshot.data(), username : username}})
+      // set user
+      dispatch(setUser(userInfo));
+    }
+    else {
+      dispatch(setUser(null))
+    }
+  }, [firebaseUser])
 
   return (
     <>
         <Router>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Switch>
-              <Route exact path="/"><Redirect to="/home" /></Route>
-              <PrivateRoute path="/home" component={Home} />
-              <PrivateRoute path="/profile/:username" component={ProfilePage} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route path="*" component={NotFound}/>
-            </Switch> 
+            {!loading &&
+              <Switch>
+                <Route exact path="/"><Redirect to="/home" /></Route>
+                <PrivateRoute path="/home" component={Home} />
+                <PrivateRoute path="/profile/:username" component={ProfilePage} />
+                <Route path="/login" component={Login} />
+                <Route path="/signup" component={Signup} />
+                <Route path="*" component={NotFound}/>
+              </Switch> 
+            }
           </ThemeProvider>
         </Router>
     </>

@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
   },
   tweetMessage: {
     whiteSpace: 'pre-line',
-    marginBottom: theme.spacing(.5),
+    marginBottom: theme.spacing(1),
   },
   tweetImage: {
-    margin: theme.spacing(1, 0, .25, 0),
+    margin: theme.spacing(.5, 0, .5, 0),
   },
   iconButton: {
     padding: theme.spacing(1),

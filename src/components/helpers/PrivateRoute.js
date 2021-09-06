@@ -1,22 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {Route, Redirect} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function PrivateRoute({component: Component, ...rest}) {  
     
-    const {user, loading} = useSelector(state => state.user);
+    const {firebaseUser} = useSelector(state=> state.user);
+
+    console.log(firebaseUser);
 
     return (
-        <>
-            { !loading &&
-                <Route
-                    {...rest}
-                    render={props => {
-                        return user ? <Component {...props} /> : <Redirect to="/login"/>
-                    }}
-                />
-            }
-            
-        </>
+        <Route
+            {...rest}
+            render={props => {
+                return firebaseUser ? <Component {...props} /> : <Redirect to="/login"/>;
+            }}
+        />
     )
 }

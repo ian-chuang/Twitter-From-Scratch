@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import RoundButton from './RoundButton'
 import CloseIcon from '@material-ui/icons/Close';
@@ -37,14 +37,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Image({ src, setSrc=null, ...props}) {
+export default function Image({ src, removeImage=null, ...props}) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-
-  const handleCloseImage = () => {
-    setSrc(null);
-  }
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -60,7 +56,7 @@ export default function Image({ src, setSrc=null, ...props}) {
         <>
           <Box position="relative" {...props}>
             <img src={src} alt="Twitter Image..." className={classes.image} onClick={handleOpenModal}/>
-            {setSrc && <RoundButton className={classes.closeButton} variant="contained" onClick={handleCloseImage}>
+            {removeImage && <RoundButton className={classes.closeButton} variant="contained" onClick={removeImage}>
               <CloseIcon fontSize="small"/>
             </RoundButton>}
           </Box>
