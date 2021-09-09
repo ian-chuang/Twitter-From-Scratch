@@ -33,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(2),
   },
   avatar: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
+    width: theme.spacing(6),
+    height: theme.spacing(6),
   },
-  textField : {
-    marginTop: theme.spacing(1),
-  },
+  textField: {},
   iconButton: {
     padding: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -54,14 +52,16 @@ export default function CreateTweet({
   divider = true,
   minRows = 1,
   onSend = null,
+  parent = null,
 }) {
   const classes = useStyles();
 
-  const {user} = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [preview, file, handleInputImage, uploadImage, removeImage] = useStorage();
+  const [preview, file, handleInputImage, uploadImage, removeImage] =
+    useStorage();
 
   const tweetOptions = [
     { text: "GIF", icon: <GifIcon />, action: null },
@@ -83,13 +83,12 @@ export default function CreateTweet({
     firestore.collection("tweets").add({
       username: user.username,
       message: message,
-      parent: null,
-      replies: [],
+      parent: parent,
       imageUrl: await uploadImage(),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      likes: 0,
-      retweets: 0,
-      
+      likes: [],
+      retweets: [],
+      replies: [],
     });
 
     setMessage("");
@@ -102,12 +101,22 @@ export default function CreateTweet({
   return (
     <>
       <form className={classes.root} onSubmit={handleSendTweet}>
-        <Avatar className={classes.avatar} src={user && (user.profilePictureURL ?  user.profilePictureURL : '/profile_picture.png')}>I</Avatar>
+        <Avatar
+          className={classes.avatar}
+          src={
+            user &&
+            (user.profilePictureURL
+              ? user.profilePictureURL
+              : "/profile_picture.png")
+          }
+        >
+          I
+        </Avatar>
 
         <Box className={classes.content}>
           <TextField
             className={classes.textField}
-            placeholder="What's happening?"
+            placeholder={parent ? "Tweet your reply" : "What's happening?"}
             type="text"
             onChange={handleTextField}
             value={message}
@@ -118,17 +127,16 @@ export default function CreateTweet({
             minRows={preview ? 1 : minRows}
           />
 
-          <Image src={preview} removeImage={removeImage}/>
+          <Image src={preview} removeImage={removeImage} />
 
           <Box display="flex" alignItems="center">
-              
             <IconButton
               className={classes.iconButton}
               color="primary"
               component="label"
             >
-              <input type="file" onChange={handleInputImage} hidden/>
-              <ImageIcon/>
+              <input type="file" onChange={handleInputImage} hidden />
+              <ImageIcon />
             </IconButton>
 
             {tweetOptions.map((option, i) => (
@@ -155,7 +163,9 @@ export default function CreateTweet({
               type="submit"
               color="primary"
               variant="contained"
-              disabled={(message.length === 0 && (!file || !preview)) || loading}
+              disabled={
+                (message.length === 0 && (!file || !preview)) || loading
+              }
             >
               Tweet
             </RoundButton>

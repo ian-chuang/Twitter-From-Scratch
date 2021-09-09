@@ -1,22 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import { firestore } from '../../firebase/config';
-import { useParams } from 'react-router';
 
 import Navigation from '../layout/Navigation';
 import PrimaryColumn from '../PrimaryColumn/PrimaryColumn';
 import Header from '../PrimaryColumn/Header';
-import Profile from '../PrimaryColumn/Profile';
-import ProfileNotFound from '../PrimaryColumn/ProfileNotFound';
+import CreateTweet from '../PrimaryColumn/CreateTweet';
 import Timeline from '../PrimaryColumn/Timeline';
 import SecondaryColumn from '../SecondaryColumn/SecondaryColumn';
 import Search from '../SecondaryColumn/Search';
 import Activity from '../SecondaryColumn/Activity';
 import FollowMenu from '../SecondaryColumn/FollowMenu';
 
-
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
-import { fetchUserSnapshot, fetchUserTimeline } from '../../services/firebase';
+import Box from '@material-ui/core/Box';
+
+import { useSelector } from 'react-redux';
 
 
 
@@ -31,28 +30,33 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function ProfilePage() {   
-    const { username } = useParams();
-    const [user, setUser] = useState(null);
+export default function Explore() {   
     const [timeline, setTimeline] = useState(null); 
+    
 
     const classes = useStyles()
 
     useEffect(()=> {
-        const unsubscribe = [];
-        unsubscribe.push(fetchUserSnapshot(username, setUser))
-        unsubscribe.push(fetchUserTimeline(username, setTimeline))
-        return () => unsubscribe.forEach((fcn) => fcn());
-    }, [username])    
+        const unsubscribe = firestore.collection('tweets')
+        .where('parent', '==', null)
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+            setTimeline(snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return {id, ...data}
+            }))
+        })
+
+        return () => unsubscribe();
+    }, [])    
 
     return (
         <Container className={classes.root}>
             <Navigation/>
 
             <PrimaryColumn>
-                <Header backButton={true} title={username}/>
-                <Profile user={user}/>
-                {user === undefined && <ProfileNotFound username={username}/>}
+                <Header title="Explore"/>
                 <Timeline tweets={timeline}/>
             </PrimaryColumn>
 

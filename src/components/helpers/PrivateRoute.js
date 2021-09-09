@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function PrivateRoute({component: Component, ...rest}) {  
     
-    const {firebaseUser} = useSelector(state=> state.user);
+    const {firebaseUser, user} = useSelector(state=> state.user);
 
     return (
         <Route
             {...rest}
             render={props => {
-                return firebaseUser ? <Component {...props} /> : <Redirect to="/login"/>;
+                return firebaseUser ? (user && <Component {...props} />) : <Redirect to="/login"/>;
             }}
         />
     )

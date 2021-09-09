@@ -6,7 +6,7 @@ import Copyright from "../layout/Copyright";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flex: 1,
     maxWidth: "24rem",
     minWidth: "20rem",
     display: "flex",

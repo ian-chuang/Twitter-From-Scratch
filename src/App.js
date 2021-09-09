@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import Home from "./components/pages/Home";
+import Explore from "./components/pages/Explore";
 import ProfilePage from "./components/pages/ProfilePage";
+import TweetPage from "./components/pages/TweetPage";
 import NotFound from "./components/pages/NotFound";
 import PrivateRoute from "./components/helpers/PrivateRoute";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -28,7 +30,7 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [])
+  }, [dispatch])
 
   useEffect (async () => {
     let unsubscribe = () => {}
@@ -47,7 +49,7 @@ function App() {
       dispatch(setUser(null))
     }
     return () => unsubscribe();
-  }, [firebaseUser])
+  }, [firebaseUser, dispatch])
 
   return (
     <>
@@ -58,7 +60,9 @@ function App() {
               <Switch>
                 <Route exact path="/"><Redirect to="/home" /></Route>
                 <PrivateRoute path="/home" component={Home} />
+                <PrivateRoute path="/explore" component={Explore} />
                 <PrivateRoute path="/profile/:username" component={ProfilePage} />
+                <PrivateRoute path="/tweet/:tweetid" component={TweetPage} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />
                 <Route path="*" component={NotFound}/>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
@@ -9,8 +9,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import RoundButton from '../layout/RoundButton';
+import FollowButton from '../layout/FollowButton';
 import Box from '@material-ui/core/Box'
+import { firestore } from '../../firebase/config';
+import { useSelector } from 'react-redux';
+import firebase from 'firebase/app';
+import {useHistory} from 'react-router-dom';
+import { fetchPeopleToFollow } from '../../services/firebase';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
 export default function FollowMenu() {      
 
     const classes = useStyles()
+    const history = useHistory();
 
-    const followList = [
-        {name: "SexyMemeLord69", handle: "@69420DankGod"},
-        {name: "Warlus", handle: "@warlus-trades"},
-    ]
+    const {user:currentUser} = useSelector(state => state.user);
+    const [users, setUsers] = useState(null);
+
+    useEffect(async () => {
+        setUsers(await fetchPeopleToFollow(currentUser));
+    }, [])
 
     return (
         <Paper className={classes.root}>
@@ -44,18 +52,18 @@ export default function FollowMenu() {
                 <ListItem className={classes.listItem}>
                     <Typography variant="h6">Who to follow</Typography>
                 </ListItem>
-                {followList && followList.map((item, i) => (
-                    <ListItem key={i} className={classes.listItem} button>
+                {users && users.map((user, i) => (
+                    <ListItem key={i} className={classes.listItem} button onClick={() => history.push(`/profile/${user.username}`)}>
                         <ListItemAvatar>
-                            <Avatar/>
+                            <Avatar src={user.profilePictureURL}/>
                         </ListItemAvatar>
                         <ListItemText
-                            secondary={item.handle}
+                            secondary={`@${user.username}`}
                         >
-                            <Typography variant="body2" component={'span'}><Box fontWeight="fontWeightMedium">{item.name}</Box></Typography>
+                            <Typography variant="body2" component={'span'}><Box fontWeight="fontWeightMedium">{user.name}</Box></Typography>
                         </ListItemText>
                         <ListItemSecondaryAction>
-                            <RoundButton size="small" color="secondary" variant="contained">Follow</RoundButton>
+                            <FollowButton size="small" user={user}>Follow</FollowButton>
                         </ListItemSecondaryAction>
                     </ListItem>
                 ))}  

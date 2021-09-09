@@ -7,7 +7,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import RoundButton from "../layout/RoundButton";
+import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
 import Link from "@material-ui/core/Link";
@@ -16,19 +16,15 @@ import { firestore } from "../../firebase/config";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { fetchUser } from "../../services/firebase";
-
-import timeDifference from "../../services/timeDifference";
+import CreateTweet from "./CreateTweet";
 
 const useStyles = makeStyles((theme) => ({
   tweet: {
     display: "flex",
     alignItems: "flex-start",
-    padding: theme.spacing(1.75, 2, 1, 2),
-    cursor: "pointer",
-    zIndex: -1,
+    padding: theme.spacing(2, 2, 0, 2),
   },
   content: {
-    marginLeft: theme.spacing(2),
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -39,23 +35,22 @@ const useStyles = makeStyles((theme) => ({
   },
   tweetInfo: {
     display: "flex",
-    gap: theme.spacing(0.5),
-    marginBottom: theme.spacing(1),
+    gap: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   tweetMessage: {
     whiteSpace: "pre-line",
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   tweetImage: {
-    margin: theme.spacing(0.5, 0, 0.5, 0),
+    marginBottom: theme.spacing(2),
   },
   iconButton: {
     padding: theme.spacing(1),
-    marginRight: theme.spacing(1),
   },
 }));
 
-export default function Tweet({ tweet, divider = true }) {
+export default function MainTweet({ tweet }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -71,9 +66,9 @@ export default function Tweet({ tweet, divider = true }) {
     currentUser?.retweets?.includes(currentUser.username)
   );
 
-  const handleToggledLiked = async (e) => {
-    e.stopPropagation();
+  const date = tweet?.timestamp?.toDate();
 
+  const handleToggledLiked = async () => {
     setToggledLiked((toggleLiked) => !toggleLiked);
 
     await firestore
@@ -97,9 +92,7 @@ export default function Tweet({ tweet, divider = true }) {
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
   };
 
-  const handleToggledRetweet = async (e) => {
-    e.stopPropagation();
-
+  const handleToggledRetweet = async () => {
     setToggledRetweet((toggleRetweet) => !toggleRetweet);
 
     await firestore
@@ -129,19 +122,19 @@ export default function Tweet({ tweet, divider = true }) {
 
   const tweetOptions = [
     {
-      text: "Reply",
+      text: "Replies",
       icon: <ChatBubbleOutlineIcon />,
       value: tweet?.replies?.length,
       action: null,
     },
     {
-      text: "Retweet",
+      text: "Retweets",
       icon: <CachedIcon />,
       value: retweets,
       action: handleToggledRetweet,
     },
     {
-      text: "Like",
+      text: "Likes",
       icon: <FavoriteBorderIcon />,
       value: likes,
       action: handleToggledLiked,
@@ -153,90 +146,109 @@ export default function Tweet({ tweet, divider = true }) {
     <>
       {tweet && user && (
         <>
-          <div
-            className={classes.tweet}
-            onClick={() => history.push(`/tweet/${tweet.id}`)}
-          >
-            <Avatar
-              className={classes.avatar}
-              src={user.profilePictureURL}
-              onClick={(e) => {
-                e.stopPropagation();
-                history.push(`/profile/${tweet.username}`);
-              }}
-            />
+          <div className={classes.tweet}>
             <Box className={classes.content}>
               <Box className={classes.tweetInfo}>
-                <Link
-                  variant="body2"
-                  color="textPrimary"
-                  component={"span"}
-                  noWrap={true}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    history.push(`/profile/${tweet.username}`);
-                  }}
-                >
-                  <Box fontWeight="fontWeightMedium">{user.name}</Box>
-                </Link>
-                {tweet.timestamp &&
-                  [
-                    `@${user.username}`,
-                    "·",
-                    timeDifference(tweet.timestamp?.toDate()),
-                  ].map((info, i) => (
-                    <Typography
-                      key={i}
-                      variant="body2"
-                      color="textSecondary"
-                      component={"span"}
-                      noWrap={true}
-                    >
-                      {info}
-                    </Typography>
-                  ))}
+                <Avatar className={classes.avatar} src={user.profilePictureURL}>
+                  I
+                </Avatar>
+                <Box>
+                  <Link
+                    variant="body1"
+                    color="textPrimary"
+                    component={"span"}
+                    onClick={() => history.push(`/profile/${tweet.username}`)}
+                  >
+                    <Box fontWeight="fontWeightMedium">{user.name}</Box>
+                  </Link>
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    component={"span"}
+                    noWrap={true}
+                  >
+                    {`@${user.username}`}
+                  </Typography>
+                </Box>
               </Box>
 
               {tweet.message?.length > 0 && (
-                <Typography
-                  variant="body2"
-                  color="textPrimary"
-                  className={classes.tweetMessage}
-                >
+                <Box fontSize={24} className={classes.tweetMessage}>
                   {tweet.message}
-                </Typography>
+                </Box>
               )}
 
               <Image
                 src={tweet.imageUrl}
                 className={classes.tweetImage}
-                showModal={false}
+                contain={false}
               />
 
-              <Box display="flex" alignItems="center">
-                {tweetOptions.map((option, i) => (
-                  <Box width="100%" display="flex" alignItems="center" key={i}>
-                    <RoundButton
-                      color="primary"
-                      aria-label={option.text}
-                      size="small"
-                      onClick={option.action}
+              <Box mb={2}>
+                {[
+                  date.toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  }),
+                  " · ",
+                  `${date.toLocaleString("en-us", {
+                    month: "short",
+                  })} ${date.getDate()}, ${date.getFullYear()}`,
+                  " · ",
+                  "Twitter Web App",
+                ].map((text, i) => (
+                  <Typography
+                    key={i}
+                    variant="body1"
+                    color="textSecondary"
+                    component={"span"}
+                    noWrap={true}
+                  >
+                    {text}
+                  </Typography>
+                ))}
+              </Box>
+
+              <Divider />
+
+              <Box display="flex" alignItems="center" my={2}>
+                {tweetOptions.slice(0, -1).map((option, i) => (
+                  <Box mr={2} key={i}>
+                    <Typography variant="body1" component="span">
+                      {option.value}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="span"
+                      color="textSecondary"
                     >
-                      {React.cloneElement(option.icon, {
-                        style: { fontSize: 20 },
-                      })}
-                    </RoundButton>
-                    {option.value > 0 && (
-                      <Box ml={1} fontSize={14}>
-                        {option.value}
-                      </Box>
-                    )}
+                      {" "}
+                      {option.text}
+                    </Typography>
                   </Box>
+                ))}
+              </Box>
+
+              <Divider />
+
+              <Box display="flex" justifyContent="space-around" my={0.75}>
+                {tweetOptions.map((option, i) => (
+                  <IconButton
+                    color="primary"
+                    onClick={option.action}
+                    className={classes.iconButton}
+                  >
+                    {React.cloneElement(option.icon, {
+                      style: { fontSize: 24 },
+                    })}
+                  </IconButton>
                 ))}
               </Box>
             </Box>
           </div>
-          {divider && <Divider />}
+          <Divider />
+          <CreateTweet parent={tweet?.id} />
         </>
       )}
     </>

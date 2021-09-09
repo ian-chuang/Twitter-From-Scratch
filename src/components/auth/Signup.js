@@ -119,9 +119,10 @@ export default function Signup() {
           const newUser = {
             name: name,
             email: email,
-            followingCount: 0,
-            followersCount: 0,
-            likedTweets: [],
+            following: [],
+            followers: [],
+            likes: [],
+            retweets: [],
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             biography: biography,
             headerImageURL: await uploadHeaderImage(),

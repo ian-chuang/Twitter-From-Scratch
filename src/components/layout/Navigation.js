@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     gap: theme.spacing(0.5),
     [theme.breakpoints.up("lg")]: {
-      flexGrow: 1,
+      flex: 1,
       alignItems: "flex-start",
     },
     [theme.breakpoints.down("md")]: {
@@ -69,7 +69,7 @@ export default function Navigation() {
 
   const [open, setOpen] = useState(false);
   const { type } = useSelector((state) => state.theme);
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const handleOpen = () => {
     setOpen(true);
@@ -91,7 +91,7 @@ export default function Navigation() {
     {
       text: "Explore",
       icon: <PublicIcon />,
-      onClick: () => history.push("/home"),
+      onClick: () => history.push("/explore"),
     },
     {
       text: "Profile",
@@ -142,29 +142,31 @@ export default function Navigation() {
             </Hidden>
           </RoundButton>
         ))}
-        {user && <>
-          <Hidden mdDown>
-            <RoundButton
-              onClick={handleOpen}
-              className={classes.tweetButtonLg}
-              color="primary"
-              variant="contained"
-              size="large"
-            >
-              Tweet
-            </RoundButton>
-          </Hidden>
-          <Hidden lgUp>
-            <RoundButton
-              onClick={handleOpen}
-              className={classes.tweetButtonSm}
-              color="primary"
-              variant="contained"
-            >
-              <CreateIcon style={{ fontSize: 35 }} />
-            </RoundButton>
-          </Hidden>
-        </>}
+        {user && (
+          <>
+            <Hidden mdDown>
+              <RoundButton
+                onClick={handleOpen}
+                className={classes.tweetButtonLg}
+                color="primary"
+                variant="contained"
+                size="large"
+              >
+                Tweet
+              </RoundButton>
+            </Hidden>
+            <Hidden lgUp>
+              <RoundButton
+                onClick={handleOpen}
+                className={classes.tweetButtonSm}
+                color="primary"
+                variant="contained"
+              >
+                <CreateIcon style={{ fontSize: 35 }} />
+              </RoundButton>
+            </Hidden>
+          </>
+        )}
       </StickyBox>
 
       {user && <CreateTweetModal handleClose={handleClose} open={open} />}
