@@ -16,7 +16,7 @@ export default function useStorage(defaultPreview=null) {
     setPreview(objectUrl)
 
     return () => URL.revokeObjectURL(objectUrl)
-  }, [file])
+  }, [file, defaultPreview])
 
 
   const handleInputImage = (e) => {

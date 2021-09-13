@@ -13,11 +13,15 @@ export function fetchHomeTimeline(user, setTimeline) {
           const tweets = result.docs.map((doc) => {
               const data = doc.data();
               const id = doc.id;
+
               return {id, ...data}
           });
 
           setTimeline(tweets);
       })
+  }
+  else {
+    setTimeline([])
   }
 
   return () => unsubscribe();
@@ -67,6 +71,19 @@ export function fetchUser(username) {
 export function fetchPeopleToFollow(user) {
   return firestore.collection('users')
   .where(firebase.firestore.FieldPath.documentId(), 'not-in', [user.username , ...user.following])
+  .get()
+  .then((result) => {
+      return result.docs.map((doc) => {
+          const username = doc.id;
+          const data = doc.data();
+          return {...data, username: username}
+      });
+  })
+}
+
+export function fetchPeopleToFollowLimit(user) {
+  return firestore.collection('users')
+  .where(firebase.firestore.FieldPath.documentId(), 'not-in', [user.username , ...user.following])
   .limit(2)
   .get()
   .then((result) => {
@@ -75,5 +92,40 @@ export function fetchPeopleToFollow(user) {
           const data = doc.data();
           return {...data, username: username}
       });
+  })
+}
+
+export function fetchActivity(setActivity) {
+  const unsubscribe = firestore.collection('activity')
+  .orderBy('timestamp', 'desc')
+  .onSnapshot(async snapshot => {
+    setActivity(await Promise.all(snapshot.docs.map( async doc => {
+      const data = doc.data();
+      const user = await firestore.collection('users').doc(data.username).get().then(result => result.data());
+      return {profilePictureURL: user?.profilePictureURL, ...data}
+    })));
+  })
+  return () => unsubscribe();
+}
+
+export function fetchActivityLimit(setActivity) {
+  const unsubscribe = firestore.collection('activity')
+  .orderBy('timestamp', 'desc')
+  .limit(4)
+  .onSnapshot(async snapshot => {
+    setActivity(await Promise.all(snapshot.docs.map( async doc => {
+      const data = doc.data();
+      const user = await firestore.collection('users').doc(data.username).get().then(result => result.data());
+      return {profilePictureURL: user?.profilePictureURL, ...data}
+    })));
+  })
+  return () => unsubscribe();
+}
+
+export function addActivity(username, message) {
+  firestore.collection('activity').add({
+    username: username,
+    message: message,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   })
 }

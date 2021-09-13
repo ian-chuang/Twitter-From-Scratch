@@ -70,7 +70,7 @@ export default function TweetPage() {
 
       <PrimaryColumn>
         <Header title="Tweet" backButton={true} />
-        <MainTweet tweet={tweet} />
+        <MainTweet tweet={tweet} replies={timeline?.length}/>
         <Timeline tweets={timeline} />
       </PrimaryColumn>
 

@@ -4,7 +4,7 @@ import RoundButton from "../layout/RoundButton";
 import ImageIcon from "@material-ui/icons/Image";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "../layout/Avatar";
 import GifIcon from "@material-ui/icons/Gif";
 import MoodIcon from "@material-ui/icons/Mood";
 import PollIcon from "@material-ui/icons/Poll";
@@ -16,6 +16,7 @@ import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
 import useStorage from "../../services/useStorage";
 import { useSelector } from "react-redux";
+import { addActivity } from "../../services/firebase";
 
 const CHARACTER_LIMIT = 280;
 
@@ -31,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginLeft: theme.spacing(2),
     gap: theme.spacing(2),
-  },
-  avatar: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
   },
   textField: {},
   iconButton: {
@@ -95,6 +92,8 @@ export default function CreateTweet({
     setProgress(0);
     setLoading(false);
 
+    addActivity(user.username, `${user.name} tweeted something.`);
+
     if (onSend) onSend();
   };
 
@@ -102,16 +101,13 @@ export default function CreateTweet({
     <>
       <form className={classes.root} onSubmit={handleSendTweet}>
         <Avatar
-          className={classes.avatar}
           src={
             user &&
             (user.profilePictureURL
               ? user.profilePictureURL
               : "/profile_picture.png")
           }
-        >
-          I
-        </Avatar>
+        ></Avatar>
 
         <Box className={classes.content}>
           <TextField

@@ -16,14 +16,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SecondaryColumn({ children }) {
+export default function SecondaryColumn({ children, copyright=true }) {
   const classes = useStyles();
 
   return (
     <Hidden smDown>
       <StickyBox className={classes.root}>
         {children}
-        <Copyright textAlign="center"/>
+        {copyright && <Copyright textAlign="center"/>}
       </StickyBox>
     </Hidden>
   );

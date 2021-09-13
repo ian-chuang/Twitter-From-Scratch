@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import CachedIcon from "@material-ui/icons/Cached";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "../layout/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
@@ -29,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  avatar: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-  },
   tweetInfo: {
     display: "flex",
     gap: theme.spacing(2),
@@ -50,21 +47,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainTweet({ tweet }) {
+export default function MainTweet({ tweet, replies }) {
   const classes = useStyles();
+  const theme = useTheme();
   const history = useHistory();
 
   const [user, setUser] = useState(null);
   const { user: currentUser } = useSelector((state) => state.user);
 
-  const [likes, setLikes] = useState(tweet?.likes?.length);
-  const [toggleLiked, setToggledLiked] = useState(
-    currentUser?.likes?.includes(currentUser.username)
-  );
-  const [retweets, setRetweets] = useState(tweet?.retweets?.length);
-  const [toggleRetweet, setToggledRetweet] = useState(
-    currentUser?.retweets?.includes(currentUser.username)
-  );
+  const [likes, setLikes] = useState(null);
+  const [toggleLiked, setToggledLiked] = useState(null);
+  const [retweets, setRetweets] = useState(null);
+  const [toggleRetweet, setToggledRetweet] = useState(null);
 
   const date = tweet?.timestamp?.toDate();
 
@@ -118,28 +112,38 @@ export default function MainTweet({ tweet }) {
 
   useEffect(async () => {
     setUser(await fetchUser(tweet?.username));
+    setLikes(tweet?.likes?.length);
+    setToggledLiked(currentUser?.likes?.includes(tweet?.id));
+    setRetweets(tweet?.retweets?.length);
+    setToggledRetweet(currentUser?.retweets?.includes(tweet?.id));
   }, [tweet]);
 
   const tweetOptions = [
     {
-      text: "Replies",
+      text: "Reply",
       icon: <ChatBubbleOutlineIcon />,
-      value: tweet?.replies?.length,
+      value: replies,
       action: null,
+      color: '#fff',
+      activated: false,
     },
     {
-      text: "Retweets",
+      text: "Retweet",
       icon: <CachedIcon />,
       value: retweets,
       action: handleToggledRetweet,
+      color: 'rgb(0, 186, 124)',
+      activated: toggleRetweet,
     },
     {
-      text: "Likes",
-      icon: <FavoriteBorderIcon />,
+      text: "Like",
+      icon: toggleLiked ? <FavoriteIcon/> : <FavoriteBorderIcon />,
       value: likes,
       action: handleToggledLiked,
+      color: 'rgb(249, 24, 128)',
+      activated: toggleLiked,
     },
-    { text: "Share", icon: <ShareIcon />, value: null, action: null },
+    { text: "Share", icon: <ShareIcon />, value: null, action: null, color: '#fff', activated: false },
   ];
 
   return (
@@ -150,7 +154,6 @@ export default function MainTweet({ tweet }) {
             <Box className={classes.content}>
               <Box className={classes.tweetInfo}>
                 <Avatar className={classes.avatar} src={user.profilePictureURL}>
-                  I
                 </Avatar>
                 <Box>
                   <Link
@@ -235,7 +238,7 @@ export default function MainTweet({ tweet }) {
               <Box display="flex" justifyContent="space-around" my={0.75}>
                 {tweetOptions.map((option, i) => (
                   <IconButton
-                    color="primary"
+                    style={{color: (option.activated?option.color:theme.palette.text.secondary) }}
                     onClick={option.action}
                     className={classes.iconButton}
                   >
@@ -245,9 +248,10 @@ export default function MainTweet({ tweet }) {
                   </IconButton>
                 ))}
               </Box>
+              <Divider />
             </Box>
           </div>
-          <Divider />
+          
           <CreateTweet parent={tweet?.id} />
         </>
       )}

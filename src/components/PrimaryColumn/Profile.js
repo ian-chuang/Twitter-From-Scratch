@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "../layout/Avatar";
 import Divider from '@material-ui/core/Divider'
 import TodayIcon from '@material-ui/icons/Today';
 import EditProfileButton from '../layout/EditProfileButton';

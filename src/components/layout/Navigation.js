@@ -101,7 +101,7 @@ export default function Navigation() {
     {
       text: "Settings",
       icon: <SettingsIcon />,
-      onClick: () => history.push("/home"),
+      onClick: () => history.push("/settings"),
     },
     {
       text: "Toggle Theme",

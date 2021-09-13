@@ -15,6 +15,7 @@ import useStorage from "../../services/useStorage";
 import ProfileInput from "../layout/ProfileInput";
 import ProfileHeaderInput from "../layout/ProfileHeaderInput";
 import Container from "@material-ui/core/Container";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function Signup() {
   const classes = useStyles();
   const history = useHistory();
@@ -78,8 +80,17 @@ export default function Signup() {
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Create account', 'Set password', 'Add profile picture', 'Add header', 'Create bio', 'Set username'];
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
+    
+    const error = await stepErrorHandling(activeStep);
+    if (error) {
+      setError(error);
+      return;
+    }
+
+    setError(null);
+
     if (activeStep + 1 < steps.length) {
       setActiveStep(activeStep + 1);
     }
@@ -90,6 +101,7 @@ export default function Signup() {
   };
 
   const handleBack = () => {
+    setError(null);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -98,16 +110,6 @@ export default function Signup() {
       setLoading(true);
 
       try {
-          //Check unique username
-          await firestore.collection("users")
-          .doc(username)
-          .get()
-          .then((doc) => {
-              if (doc.exists) {
-                  throw {message: `Your username is not available.`};
-              }
-          })
-
           const {user} = await auth.createUserWithEmailAndPassword(email, password)
           
           await firestore.collection('uid')
@@ -152,6 +154,7 @@ export default function Signup() {
             <Box className={classes.primaryText}>
               Create your account
             </Box>
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
             <TextField
               className={classes.marginBottom}
               variant="outlined"
@@ -181,6 +184,7 @@ export default function Signup() {
             <Box className={classes.secondaryText}>
               Make sure it's 6 characters or more.
             </Box>
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
             <TextField
               variant="outlined"
               fullWidth
@@ -202,6 +206,7 @@ export default function Signup() {
             <Box className={classes.secondaryText}>
                 Have a favorite selfie? Upload it now.
             </Box>
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
             <ProfileInput
               profilePreview={profilePreview}
               handleProfileInputImage={handleProfileInputImage}
@@ -212,13 +217,13 @@ export default function Signup() {
       case 3:
         return (
           <>
-            <Box className={classes.primaryText}
-            >
+            <Box className={classes.primaryText}>
               Pick a header
             </Box>
             <Box className={classes.secondaryText}>
                 People who visit your profile will see it. Show your style.
             </Box>
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
             <ProfileHeaderInput
               profilePreview={profilePreview}
               headerPreview={headerPreview}
@@ -230,13 +235,13 @@ export default function Signup() {
       case 4:
         return (
           <>
-            <Box className={classes.primaryText}
-            >
+            <Box className={classes.primaryText}>
               Describe yourself
             </Box>
             <Box className={classes.secondaryText}>
               What makes you special? Don't think too hard, just have fun with it.
             </Box>
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
             <TextField
               variant="outlined"
               fullWidth
@@ -260,6 +265,8 @@ export default function Signup() {
             <Box className={classes.secondaryText}>
               Your @username is unique.
             </Box>
+
+            {error && <Box width="100%" mb={2}><Alert severity="error">{error}</Alert></Box>}
               
             <TextField
               variant="outlined"
@@ -277,11 +284,16 @@ export default function Signup() {
     }
   }
 
-  const stepErrorHandling = (step) => {
+  const stepErrorHandling = async (step) => {
     switch (step) {
       case 0:
+        if (name.length === 0) return 'Name is required.'
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) return 'Invalid email address.';
+        const query1 = await firestore.collection('users').where('email', '==', email).get()
+        if (query1.docs.length !== 0) return 'Your email is already taken.'
         break;
       case 1:
+        if (password.length <= 6) return 'Password must be greater than 6 characters.';
         break;
       case 2:
         break;
@@ -290,9 +302,13 @@ export default function Signup() {
       case 4:
         break;
       case 5:
+        if (username.length === 0) return 'Username is required.';
+        if (!/^\S*$/.test(username)) return 'No spaces are allowed in your username.'
+        const query2 = await firestore.collection("users").doc(username).get()
+        if (query2.exists) return 'Your username is already taken.';
         break;
       default:
-        break;
+        return null;
     }
   }
 
@@ -301,10 +317,16 @@ export default function Signup() {
       <Box className={classes.root}>
         <form onSubmit={handleNext}>
           <Box mb={3}>
-            <TwitterIcon style={{ fontSize: 45 }} color="primary" />
-            {error && <Box width="100%" my={2}><Alert severity="error">{error}</Alert></Box>}
+            <IconButton color="primary" onClick={() => history.push('/login')}>
+              <TwitterIcon style={{ fontSize: 45 }} />
+            </IconButton>
+            
             <Box className={classes.content}>
-              <Box flexGrow={1} my={4}>{getStepContent(activeStep)}</Box>
+              
+              <Box flexGrow={1} my={4}>
+                {getStepContent(activeStep)}
+              </Box>
+
               <div className={classes.buttons}>
                 {activeStep !== 0 && 
                     <Button size="large" onClick={handleBack} variant="contained" color="secondary" fullWidth>
@@ -320,7 +342,7 @@ export default function Signup() {
                   fullWidth
                   disabled={loading}
                 >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  {activeStep === steps.length - 1 ? 'Sign up' : 'Next'}
                 </Button>
               </div>
             </Box>

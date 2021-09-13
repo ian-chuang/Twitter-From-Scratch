@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Link from '@material-ui/core/Link'
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import FollowButton from '../layout/FollowButton';
@@ -13,13 +14,10 @@ import { firestore } from '../../firebase/config';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase/app';
 import {useHistory} from 'react-router-dom';
-import { fetchPeopleToFollowLimit } from '../../services/firebase';
+import { fetchPeopleToFollow } from '../../services/firebase';
 import Avatar from '../layout/Avatar';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        borderRadius: theme.spacing(2),
-    },
     list: {
         padding: 0,
     },
@@ -31,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: theme.spacing(0,0,2,2),
     },
     avatar: {
-        marginRight: theme.spacing(2),
-      }
+      marginRight: theme.spacing(2),
+    }
 }))
 
-export default function FollowMenu() {      
+export default function LargeFollowMenu() {      
 
     const classes = useStyles()
     const history = useHistory();
@@ -44,18 +42,13 @@ export default function FollowMenu() {
     const [users, setUsers] = useState(null);
 
     useEffect(async () => {
-        setUsers(await fetchPeopleToFollowLimit(currentUser));
+        setUsers(await fetchPeopleToFollow(currentUser));
     }, [])
 
     return (
         <>
-            { users && 
-                <Paper className={classes.root}>
-                
+            { users &&                 
                 <List className={classes.list}>
-                    <ListItem className={classes.listItem}>
-                        <Typography variant="h6">Who to follow</Typography>
-                    </ListItem>
                     {users && users.map((user, i) => (
                         <ListItem key={i} className={classes.listItem} button onClick={() => history.push(`/profile/${user.username}`)}>
                             <Avatar src={user.profilePictureURL} className={classes.avatar}/>
@@ -69,14 +62,7 @@ export default function FollowMenu() {
                             </ListItemSecondaryAction>
                         </ListItem>
                     ))}  
-                    <ListItem className={classes.showMore} onClick={() => history.push('/connect')} button>
-                        <Link href="#" style={{textDecoration: 'none'}}>
-                            Show more
-                        </Link>
-                    </ListItem>
                 </List>
-                
-            </Paper>
             }
         </>
     )

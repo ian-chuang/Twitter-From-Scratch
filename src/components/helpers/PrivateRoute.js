@@ -10,7 +10,7 @@ export default function PrivateRoute({component: Component, ...rest}) {
         <Route
             {...rest}
             render={props => {
-                return firebaseUser ? (user && <Component {...props} />) : <Redirect to="/login"/>;
+                return (firebaseUser || user === undefined) ? (user && <Component {...props} />) : <Redirect to="/login"/>;
             }}
         />
     )

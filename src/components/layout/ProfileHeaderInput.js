@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "./Avatar";
 import IconButton from '@material-ui/core/IconButton';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
@@ -83,7 +83,7 @@ export default function ProfileHeaderInput({profilePreview, headerPreview, handl
             </IconButton>}
           </Box>
         </Box>
-        <Box className={classes.profilePicture} style={{backgroundImage: `url(${profilePreview ? profilePreview : '/profile_picture.png'})`}}>
+        <Avatar className={classes.profilePicture} src={profilePreview}>
           {handleProfileInputImage && <Box className={classes.center}>
             <IconButton
               className={classes.iconButton}
@@ -93,7 +93,7 @@ export default function ProfileHeaderInput({profilePreview, headerPreview, handl
               <AddAPhotoRoundedIcon fontSize="small"/>
             </IconButton>
           </Box>}
-        </Box>
+        </Avatar>
       </Box>
   );
 }

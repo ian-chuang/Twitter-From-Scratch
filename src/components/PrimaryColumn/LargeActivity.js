@@ -7,14 +7,11 @@ import Link from '@material-ui/core/Link'
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '../layout/Avatar';
 import Typography from '@material-ui/core/Typography';
-import {fetchActivityLimit} from '../../services/firebase';
+import {fetchActivity} from '../../services/firebase';
 import timeDifference from "../../services/timeDifference";
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        borderRadius: theme.spacing(2),
-    },
     list: {
         padding: 0,
     },
@@ -30,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function Activity() {      
+export default function LargeActivity() {      
 
     const classes = useStyles()
     const history = useHistory();
@@ -38,17 +35,12 @@ export default function Activity() {
     const [activity, setActivity] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = fetchActivityLimit(setActivity);
+        const unsubscribe = fetchActivity(setActivity);
         return () => unsubscribe();
     }, [])
     
     return (
-        <Paper className={classes.root}>
-            
             <List className={classes.list}>
-                <ListItem className={classes.listItem}>
-                    <Typography variant="h6">What's happening</Typography>
-                </ListItem>
                 {activity && activity.map((item, i) => (
                     <ListItem key={i} className={classes.listItem} onClick={() => history.push(`/profile/${item.username}`)} button>
                         <Avatar className={classes.avatar} src={item?.profilePictureURL}/>
@@ -59,13 +51,6 @@ export default function Activity() {
                         </ListItemText>
                     </ListItem>
                 ))}  
-                <ListItem className={classes.showMore} onClick={() => history.push('/activity')} button>
-                    <Link href="#" style={{textDecoration: 'none'}}>
-                        Show more
-                    </Link>
-                </ListItem>
             </List>
-            
-        </Paper>
     )
 }

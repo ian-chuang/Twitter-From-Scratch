@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import CachedIcon from "@material-ui/icons/Cached";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "../layout/Avatar";
 import RoundButton from "../layout/RoundButton";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
@@ -33,10 +34,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  avatar: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-  },
   tweetInfo: {
     display: "flex",
     gap: theme.spacing(0.5),
@@ -57,24 +54,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tweet({ tweet, divider = true }) {
   const classes = useStyles();
+  const theme = useTheme();
   const history = useHistory();
 
-  const [user, setUser] = useState(null);
   const { user: currentUser } = useSelector((state) => state.user);
 
-  const [likes, setLikes] = useState(tweet?.likes?.length);
-  const [toggleLiked, setToggledLiked] = useState(
-    currentUser?.likes?.includes(currentUser.username)
-  );
-  const [retweets, setRetweets] = useState(tweet?.retweets?.length);
-  const [toggleRetweet, setToggledRetweet] = useState(
-    currentUser?.retweets?.includes(currentUser.username)
-  );
+  const [user, setUser] = useState(null);
+  const [likes, setLikes] = useState(null);
+  const [toggleLiked, setToggledLiked] = useState(null);
+  const [retweets, setRetweets] = useState(null);
+  const [toggleRetweet, setToggledRetweet] = useState(null);
 
   const handleToggledLiked = async (e) => {
     e.stopPropagation();
 
-    setToggledLiked((toggleLiked) => !toggleLiked);
+    await setToggledLiked((toggleLiked) => !toggleLiked);
 
     await firestore
       .collection("tweets")
@@ -99,7 +93,6 @@ export default function Tweet({ tweet, divider = true }) {
 
   const handleToggledRetweet = async (e) => {
     e.stopPropagation();
-
     setToggledRetweet((toggleRetweet) => !toggleRetweet);
 
     await firestore
@@ -125,7 +118,11 @@ export default function Tweet({ tweet, divider = true }) {
 
   useEffect(async () => {
     setUser(await fetchUser(tweet?.username));
-  }, [tweet]);
+    setLikes(tweet?.likes?.length);
+    setToggledLiked(currentUser?.likes?.includes(tweet?.id));
+    setRetweets(tweet?.retweets?.length);
+    setToggledRetweet(currentUser?.retweets?.includes(tweet?.id));
+  }, [tweet.id]);
 
   const tweetOptions = [
     {
@@ -133,20 +130,26 @@ export default function Tweet({ tweet, divider = true }) {
       icon: <ChatBubbleOutlineIcon />,
       value: tweet?.replies?.length,
       action: null,
+      color: '#fff',
+      activated: false,
     },
     {
       text: "Retweet",
       icon: <CachedIcon />,
       value: retweets,
       action: handleToggledRetweet,
+      color: 'rgb(0, 186, 124)',
+      activated: toggleRetweet,
     },
     {
       text: "Like",
-      icon: <FavoriteBorderIcon />,
+      icon: toggleLiked ? <FavoriteIcon/> : <FavoriteBorderIcon />,
       value: likes,
       action: handleToggledLiked,
+      color: 'rgb(249, 24, 128)',
+      activated: toggleLiked,
     },
-    { text: "Share", icon: <ShareIcon />, value: null, action: null },
+    { text: "Share", icon: <ShareIcon />, value: null, action: null, color: '#fff', activated: false },
   ];
 
   return (
@@ -158,7 +161,6 @@ export default function Tweet({ tweet, divider = true }) {
             onClick={() => history.push(`/tweet/${tweet.id}`)}
           >
             <Avatar
-              className={classes.avatar}
               src={user.profilePictureURL}
               onClick={(e) => {
                 e.stopPropagation();
@@ -217,20 +219,20 @@ export default function Tweet({ tweet, divider = true }) {
                 {tweetOptions.map((option, i) => (
                   <Box width="100%" display="flex" alignItems="center" key={i}>
                     <RoundButton
-                      color="primary"
-                      aria-label={option.text}
+                      style={{color: (option.activated?option.color:theme.palette.text.secondary) }}
                       size="small"
                       onClick={option.action}
                     >
                       {React.cloneElement(option.icon, {
                         style: { fontSize: 20 },
                       })}
-                    </RoundButton>
-                    {option.value > 0 && (
-                      <Box ml={1} fontSize={14}>
+                      {option.value > 0 && (
+                      <Box ml={1} fontSize={13}>
                         {option.value}
                       </Box>
                     )}
+                    </RoundButton>
+                    
                   </Box>
                 ))}
               </Box>

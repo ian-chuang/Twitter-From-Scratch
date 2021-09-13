@@ -13,6 +13,11 @@ import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
 import { fetchHomeTimeline } from "../../services/firebase";
 import Welcome from "../PrimaryColumn/Welcome";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,34 +28,46 @@ const useStyles = makeStyles((theme) => ({
       margin: "auto",
     },
   },
+  list: {
+    padding: 0,
+  }
 }));
 
-export default function Home() {
+export default function Settings() {
   const classes = useStyles();
-  const [timeline, setTimeline] = useState(null);
   const { user } = useSelector((state) => state.user);
 
-  useEffect(async () => {
-    let unsubscribe = fetchHomeTimeline(user, setTimeline);
-    return () => unsubscribe();
-  }, []);
+  const listItems = [
+    {title: 'Username', info: `@${user?.username}`},
+    {title: 'Name', info: user?.name},
+    {title: 'Email', info: user?.email},
+    {title: 'Account Creation', info: user?.createdAt.toDate().toString()},
+  ]
 
   return (
     <Container className={classes.root}>
       <Navigation />
 
       <PrimaryColumn>
-        <Header title="Home" />
-        <CreateTweet />
-        <Welcome display={timeline?.length === 0}/>
-        <Timeline tweets={timeline} /> 
+        <Header title="Settings" backButton={true} />
+        <List className={classes.list}>
+            {listItems.map((item, i) => (
+              <ListItem
+                key={i}
+                className={classes.listItem}
+                button
+              >
+                <ListItemText secondary={item.info}>
+                  <Typography variant="body2" component={"span"}>
+                    <Box fontWeight="fontWeightMedium">{item.title}</Box>
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+            ))}
+        </List>
       </PrimaryColumn>
 
-      <SecondaryColumn>
-        <Search />
-        <Activity />
-        <FollowMenu />
-      </SecondaryColumn>
+      <SecondaryColumn copyright={false}></SecondaryColumn>
     </Container>
   );
 }
