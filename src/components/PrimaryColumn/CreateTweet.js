@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState} from "react";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import RoundButton from "../layout/RoundButton";
 import ImageIcon from "@material-ui/icons/Image";
 import TextField from "@material-ui/core/TextField";
@@ -10,13 +10,14 @@ import MoodIcon from "@material-ui/icons/Mood";
 import PollIcon from "@material-ui/icons/Poll";
 import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { firestore, auth } from "../../firebase/config";
+import { firestore } from "../../firebase/config";
 import firebase from "firebase/app";
 import Divider from "@material-ui/core/Divider";
 import Image from "../layout/Image";
 import useStorage from "../../services/useStorage";
 import { useSelector } from "react-redux";
 import { addActivity } from "../../services/firebase";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const CHARACTER_LIMIT = 280;
 
@@ -52,6 +53,7 @@ export default function CreateTweet({
   parent = null,
 }) {
   const classes = useStyles();
+  const theme = useTheme();
 
   const { user } = useSelector((state) => state.user);
   const [message, setMessage] = useState("");
@@ -97,6 +99,11 @@ export default function CreateTweet({
     if (onSend) onSend();
   };
 
+  const disableButton =
+    message.length > CHARACTER_LIMIT ||
+    (message.length === 0 && (!file || !preview)) ||
+    loading;
+
   return (
     <>
       <form className={classes.root} onSubmit={handleSendTweet}>
@@ -118,7 +125,6 @@ export default function CreateTweet({
             value={message}
             multiline
             InputProps={{ style: { fontSize: 20 }, disableUnderline: true }}
-            inputProps={{ maxLength: CHARACTER_LIMIT }}
             maxRows={20}
             minRows={preview ? 1 : minRows}
           />
@@ -136,22 +142,29 @@ export default function CreateTweet({
             </IconButton>
 
             {tweetOptions.map((option, i) => (
-              <IconButton
-                className={classes.iconButton}
-                color="primary"
-                aria-label={option.text}
-                key={i}
-              >
-                {React.cloneElement(option.icon, {
-                  fontSize: "small",
-                })}
-              </IconButton>
+              <Tooltip title="Not functional" key={i} arrow>
+                <IconButton
+                  className={classes.iconButton}
+                  color="primary"
+                  aria-label={option.text}
+                  
+                >
+                  {React.cloneElement(option.icon, {
+                    fontSize: "small",
+                  })}
+                </IconButton>
+              </Tooltip>
             ))}
             <CircularProgress
               className={classes.progress}
               variant="determinate"
               value={Math.min(100, progress)}
-              color="primary"
+              style={{
+                color:
+                  message.length > CHARACTER_LIMIT
+                    ? theme.palette.error.main
+                    : theme.palette.primary.main,
+              }}
               size={30}
               thickness={5}
             />
@@ -159,9 +172,7 @@ export default function CreateTweet({
               type="submit"
               color="primary"
               variant="contained"
-              disabled={
-                (message.length === 0 && (!file || !preview)) || loading
-              }
+              disabled={disableButton}
             >
               Tweet
             </RoundButton>

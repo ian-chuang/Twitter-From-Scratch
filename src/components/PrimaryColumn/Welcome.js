@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import RoundButton from "../layout/RoundButton";
 import { useHistory } from "react-router";
@@ -10,18 +10,19 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
     marginTop: theme.spacing(8),
     alignSelf: "center",
-    maxWidth: '20rem',
+    maxWidth: "20rem",
   },
 }));
 
-export default function Welcome({display}) {
+export default function Welcome({ display }) {
   const classes = useStyles();
   const history = useHistory();
 
   return (
     <>
-      {display && <>
-        <Box className={classes.root}>
+      {display && (
+        <>
+          <Box className={classes.root}>
             <Box
               fontWeight="fontWeightBold"
               fontSize="h4.fontSize"
@@ -32,10 +33,16 @@ export default function Welcome({display}) {
               variant="body2"
             >{`This is the best place to see what’s happening in your world. Find some people and topics to follow now.`}</Typography>
             <Box mt={3}>
-              <RoundButton size="large" color="primary" variant="contained" onClick={() => history.push('/connect')}>{`Let's go!`}</RoundButton>
+              <RoundButton
+                size="large"
+                color="primary"
+                variant="contained"
+                onClick={() => history.push("/connect")}
+              >{`Let's go!`}</RoundButton>
             </Box>
-        </Box>
-      </>}
+          </Box>
+        </>
+      )}
     </>
   );
 }

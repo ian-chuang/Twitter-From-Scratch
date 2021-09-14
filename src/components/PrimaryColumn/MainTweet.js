@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import CachedIcon from "@material-ui/icons/Cached";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "../layout/Avatar";
@@ -124,7 +124,7 @@ export default function MainTweet({ tweet, replies }) {
       icon: <ChatBubbleOutlineIcon />,
       value: replies,
       action: null,
-      color: '#fff',
+      color: "#fff",
       activated: false,
     },
     {
@@ -132,18 +132,25 @@ export default function MainTweet({ tweet, replies }) {
       icon: <CachedIcon />,
       value: retweets,
       action: handleToggledRetweet,
-      color: 'rgb(0, 186, 124)',
+      color: "rgb(0, 186, 124)",
       activated: toggleRetweet,
     },
     {
       text: "Like",
-      icon: toggleLiked ? <FavoriteIcon/> : <FavoriteBorderIcon />,
+      icon: toggleLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />,
       value: likes,
       action: handleToggledLiked,
-      color: 'rgb(249, 24, 128)',
+      color: "rgb(249, 24, 128)",
       activated: toggleLiked,
     },
-    { text: "Share", icon: <ShareIcon />, value: null, action: null, color: '#fff', activated: false },
+    {
+      text: "Share",
+      icon: <ShareIcon />,
+      value: null,
+      action: null,
+      color: "#fff",
+      activated: false,
+    },
   ];
 
   return (
@@ -153,8 +160,10 @@ export default function MainTweet({ tweet, replies }) {
           <div className={classes.tweet}>
             <Box className={classes.content}>
               <Box className={classes.tweetInfo}>
-                <Avatar className={classes.avatar} src={user.profilePictureURL}>
-                </Avatar>
+                <Avatar
+                  className={classes.avatar}
+                  src={user.profilePictureURL}
+                ></Avatar>
                 <Box>
                   <Link
                     variant="body1"
@@ -238,7 +247,11 @@ export default function MainTweet({ tweet, replies }) {
               <Box display="flex" justifyContent="space-around" my={0.75}>
                 {tweetOptions.map((option, i) => (
                   <IconButton
-                    style={{color: (option.activated?option.color:theme.palette.text.secondary) }}
+                    style={{
+                      color: option.activated
+                        ? option.color
+                        : theme.palette.text.secondary,
+                    }}
                     onClick={option.action}
                     className={classes.iconButton}
                   >
@@ -251,7 +264,7 @@ export default function MainTweet({ tweet, replies }) {
               <Divider />
             </Box>
           </div>
-          
+
           <CreateTweet parent={tweet?.id} />
         </>
       )}

@@ -1,6 +1,5 @@
 import React from "react";
 import Tweet from "./Tweet";
-import { useSelector } from "react-redux";
 
 export default function Timeline({ tweets }) {
   return (

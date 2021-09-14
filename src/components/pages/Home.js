@@ -42,8 +42,8 @@ export default function Home() {
       <PrimaryColumn>
         <Header title="Home" />
         <CreateTweet />
-        <Welcome display={timeline?.length === 0}/>
-        <Timeline tweets={timeline} /> 
+        <Welcome display={timeline?.length === 0} />
+        <Timeline tweets={timeline} />
       </PrimaryColumn>
 
       <SecondaryColumn>

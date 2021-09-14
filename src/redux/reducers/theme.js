@@ -17,12 +17,12 @@ const darkTheme = createTheme({
     },
     divider: "rgba(255,255,255,0.20)",
   },
-  typography : {
-    body2 : {
-      fontSize: '.925rem'
-    }
+  typography: {
+    body2: {
+      fontSize: ".925rem",
+    },
   },
-  shadows: ["none"]
+  shadows: ["none"],
 });
 
 const dimTheme = createTheme({
@@ -42,12 +42,12 @@ const dimTheme = createTheme({
     },
     divider: "rgba(255,255,255,0.20)",
   },
-  typography : {
-    body2 : {
-      fontSize: '.925rem'
-    }
+  typography: {
+    body2: {
+      fontSize: ".925rem",
+    },
   },
-  shadows: ["none"]
+  shadows: ["none"],
 });
 
 const lightTheme = createTheme({
@@ -66,33 +66,35 @@ const lightTheme = createTheme({
       paper: "rgb(247, 249, 249)",
     },
     text: {
-      secondary: "rgba(0, 0, 0, 0.70)"
+      secondary: "rgba(0, 0, 0, 0.70)",
     },
     divider: "rgba(0,0,0,0.075)",
   },
-  typography : {
-    body2 : {
-      fontSize: '.925rem'
-    }
+  typography: {
+    body2: {
+      fontSize: ".925rem",
+    },
   },
   shadows: ["none"],
 });
 
 const initialState = {
-  type: 'dark',
+  type: "dark",
   theme: darkTheme,
-}
+};
 
-const themeReducer = (state=initialState, action) => {
-  switch(action.type) {
-    case 'TOGGLE_THEME':
-      if (state.type === 'dark') return {type:'dim', theme: {...dimTheme}};
-      if (state.type === 'dim') return {type: 'light', theme: {...lightTheme}};
-      if (state.type === 'light') return {type: 'dark', theme: {...darkTheme}};
+const themeReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "TOGGLE_THEME":
+      if (state.type === "dark") return { type: "dim", theme: { ...dimTheme } };
+      if (state.type === "dim")
+        return { type: "light", theme: { ...lightTheme } };
+      if (state.type === "light")
+        return { type: "dark", theme: { ...darkTheme } };
       return state;
     default:
       return state;
   }
-}
+};
 
 export default themeReducer;

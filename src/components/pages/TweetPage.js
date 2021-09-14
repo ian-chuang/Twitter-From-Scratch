@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../../firebase/config";
-
 import Navigation from "../layout/Navigation";
 import PrimaryColumn from "../PrimaryColumn/PrimaryColumn";
 import Header from "../PrimaryColumn/Header";
@@ -10,10 +9,8 @@ import SecondaryColumn from "../SecondaryColumn/SecondaryColumn";
 import Search from "../SecondaryColumn/Search";
 import Activity from "../SecondaryColumn/Activity";
 import FollowMenu from "../SecondaryColumn/FollowMenu";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
 import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +67,7 @@ export default function TweetPage() {
 
       <PrimaryColumn>
         <Header title="Tweet" backButton={true} />
-        <MainTweet tweet={tweet} replies={timeline?.length}/>
+        <MainTweet tweet={tweet} replies={timeline?.length} />
         <Timeline tweets={timeline} />
       </PrimaryColumn>
 

@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import CachedIcon from "@material-ui/icons/Cached";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "../layout/Avatar";
@@ -17,7 +17,7 @@ import { firestore } from "../../firebase/config";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { fetchUser } from "../../services/firebase";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import timeDifference from "../../services/timeDifference";
 
 const useStyles = makeStyles((theme) => ({
@@ -130,7 +130,7 @@ export default function Tweet({ tweet, divider = true }) {
       icon: <ChatBubbleOutlineIcon />,
       value: tweet?.replies?.length,
       action: null,
-      color: '#fff',
+      color: "#fff",
       activated: false,
     },
     {
@@ -138,18 +138,25 @@ export default function Tweet({ tweet, divider = true }) {
       icon: <CachedIcon />,
       value: retweets,
       action: handleToggledRetweet,
-      color: 'rgb(0, 186, 124)',
+      color: "rgb(0, 186, 124)",
       activated: toggleRetweet,
     },
     {
       text: "Like",
-      icon: toggleLiked ? <FavoriteIcon/> : <FavoriteBorderIcon />,
+      icon: toggleLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />,
       value: likes,
       action: handleToggledLiked,
-      color: 'rgb(249, 24, 128)',
+      color: "rgb(249, 24, 128)",
       activated: toggleLiked,
     },
-    { text: "Share", icon: <ShareIcon />, value: null, action: null, color: '#fff', activated: false },
+    {
+      text: "Share",
+      icon: <ShareIcon />,
+      value: null,
+      action: null,
+      color: "#fff",
+      activated: false,
+    },
   ];
 
   return (
@@ -218,21 +225,44 @@ export default function Tweet({ tweet, divider = true }) {
               <Box display="flex" alignItems="center">
                 {tweetOptions.map((option, i) => (
                   <Box width="100%" display="flex" alignItems="center" key={i}>
-                    <RoundButton
-                      style={{color: (option.activated?option.color:theme.palette.text.secondary) }}
-                      size="small"
-                      onClick={option.action}
-                    >
-                      {React.cloneElement(option.icon, {
-                        style: { fontSize: 20 },
-                      })}
-                      {option.value > 0 && (
-                      <Box ml={1} fontSize={13}>
-                        {option.value}
-                      </Box>
+                    {!!option.action ? (
+                      <RoundButton
+                        style={{
+                          color: option.activated
+                            ? option.color
+                            : theme.palette.text.secondary,
+                        }}
+                        size="small"
+                        onClick={option.action}
+                      >
+                        {React.cloneElement(option.icon, {
+                          style: { fontSize: 20 },
+                        })}
+                        {option.value > 0 && (
+                          <Box ml={1} fontSize={13}>
+                            {option.value}
+                          </Box>
+                        )}
+                      </RoundButton>
+                    ) : (
+                      <Tooltip title="Not functional" arrow>
+                        <RoundButton
+                          style={{
+                            color: option.activated
+                              ? option.color
+                              : theme.palette.text.secondary,
+                          }}
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          {React.cloneElement(option.icon, {
+                            style: { fontSize: 20 },
+                          })}
+                        </RoundButton>
+                      </Tooltip>
                     )}
-                    </RoundButton>
-                    
                   </Box>
                 ))}
               </Box>
