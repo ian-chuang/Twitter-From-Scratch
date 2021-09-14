@@ -6,7 +6,9 @@ This is a clone of the social media app, Twitter, built completely from scratch 
 
 In the app, once you sign up and create an account, you can start posting messages and viewing other people's tweets.
 
-### Main Features
+<img src="readme_images/showcase1.PNG" /> 
+
+## Main Features
 - Send tweets
 - View a timeline of peoples' tweets
 - Reply to tweets
@@ -18,7 +20,7 @@ In the app, once you sign up and create an account, you can start posting messag
 - Activity feed of what other users are doing
 - Follow menu
 
-### How to use
+## How to use
 
 - To tweet either click the blue tweet button in the side navigation, or go to the top the home page and look at the top.
 - To reply to a tweet click on any tweet you see. This will expand the tweet and give an option to reply below it.
@@ -29,7 +31,7 @@ In the app, once you sign up and create an account, you can start posting messag
 - To edit your profile, go to your profile page and click the edit profile button.
 - There's other features that you can try and explore!
 
-### Pages
+## Pages
 
 There are several pages within the app:
 - /login
@@ -42,7 +44,7 @@ There are several pages within the app:
 - /activity (list of activity that is happening)
 - /tweet/:tweetid (view replies to a tweet)
 
-### Layout
+## Layout
 
 I designed the layout to be dynamic so that it adjusts content as you resize the page.
 
@@ -50,6 +52,13 @@ Since the UI of Twitter is organized by columns, I separated components by prima
 
 - The primary column is the central column that holds important information like timelines and profiles.
 - The secondary is the column to the right that holds extra information like people to follow or an activity feed.
+
+## More Pictures
+
+<img src="readme_images/showcase2.PNG" /> 
+<img src="readme_images/showcase3.PNG" /> 
+<img src="readme_images/showcase4.PNG" />
+<img src="readme_images/gif1.gif" />
 
 ## To run on your own.
 
