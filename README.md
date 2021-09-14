@@ -31,7 +31,7 @@ In the app, once you sign up and create an account, you can start posting messag
 - To edit your profile, go to your profile page and click the edit profile button.
 - There's other features that you can try and explore!
 
-<img src="readme_images/gif3.PNG" /> 
+<img src="readme_images/gif3.gif" /> 
 
 ## Pages
 
