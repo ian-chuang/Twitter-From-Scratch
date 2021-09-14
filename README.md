@@ -1,8 +1,57 @@
-# Getting Started with Create React App
+# Twitter
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Check out the demo here: https://ian-chuang.github.io/Twitter/
 
-## Available Scripts
+This is a clone of the social media app, Twitter, built completely from scratch with ReactJS, Redux, Firebase, and Material UI.
+
+In the app, once you sign up and create an account, you can start posting messages and viewing other people's tweets.
+
+### Main Features
+- Send tweets
+- View a timeline of peoples' tweets
+- Reply to tweets
+- Like and retweet tweets
+- Follow other users
+- Add your own profile picture and header background
+- Add a bio
+- Toggle light and dark mode
+- Activity feed of what other users are doing
+- Follow menu
+
+### How to use
+
+- To tweet either click the blue tweet button in the side navigation, or go to the top the home page and look at the top.
+- To reply to a tweet click on any tweet you see. This will expand the tweet and give an option to reply below it.
+- To like a tweet, click the heart icon below it.
+- To view any user's profile page, click their avatar or name when you see it.
+- To follow a user look at the follow menu on the right or profile page of a user for a follow button.
+- To toggle light and dark themes, click the Toggle Theme button on the navigation.
+- To edit your profile, go to your profile page and click the edit profile button.
+- There's other features that you can try and explore!
+
+### Pages
+
+There are several pages within the app:
+- /login
+- /signup 
+- /home (timeline of tweets from people you follow)
+- /explore (timeline of all tweets from everyone)
+- /profile/:username (your individual profile that everyone can see)
+- /settings (your account information)
+- /connect (list of users you can follow)
+- /activity (list of activity that is happening)
+- /tweet/:tweetid (view replies to a tweet)
+
+### Layout
+
+I designed the layout to be dynamic so that it adjusts content as you resize the page.
+
+Since the UI of Twitter is organized by columns, I separated components by primary column and secondary column.
+
+- The primary column is the central column that holds important information like timelines and profiles.
+- The secondary is the column to the right that holds extra information like people to follow or an activity feed.
+
+## To run on your own.
 
 In the project directory, you can run:
 
@@ -13,58 +62,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
