@@ -19,7 +19,7 @@ export default function Avatar({ src, children, className, ...rest }) {
     <Box
       {...rest}
       className={clsx(classes.profilePicture, className)}
-      style={{ backgroundImage: `url(${src ? src : "/profile_picture.png"})` }}
+      style={{ backgroundImage: `url(${src ? src : process.env.PUBLIC_URL + "/profile_picture.png"})` }}
     >
       {children}
     </Box>

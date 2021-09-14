@@ -3,25 +3,21 @@ import firebase from "firebase/app";
 
 export function fetchHomeTimeline(user, setTimeline) {
   let unsubscribe = () => {};
-  if (user.following.length > 0) {
-    unsubscribe = firestore
-      .collection("tweets")
-      .where("parent", "==", null)
-      .where("username", "in", [user.username, ...user.following])
-      .orderBy("timestamp", "desc")
-      .onSnapshot((result) => {
-        const tweets = result.docs.map((doc) => {
-          const data = doc.data();
-          const id = doc.id;
+  unsubscribe = firestore
+    .collection("tweets")
+    .where("parent", "==", null)
+    .where("username", "in", [user.username, ...user.following])
+    .orderBy("timestamp", "desc")
+    .onSnapshot((result) => {
+      const tweets = result.docs.map((doc) => {
+        const data = doc.data();
+        const id = doc.id;
 
-          return { id, ...data };
-        });
-
-        setTimeline(tweets);
+        return { id, ...data };
       });
-  } else {
-    setTimeline([]);
-  }
+
+      setTimeline(tweets);
+    });
 
   return () => unsubscribe();
 }

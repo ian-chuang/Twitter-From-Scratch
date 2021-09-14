@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   image: {
-    backgroundImage: "url(/auth_image.png)",
     backgroundSize: "cover",
     backgroundPosition: "center",
     display: "flex",
@@ -117,7 +116,7 @@ export default function Login() {
     <Box className={classes.root}>
       <Grid container component="main" className={classes.main}>
         <Hidden xsDown>
-          <Grid item sm={4} md={6} lg={7} className={classes.image}>
+          <Grid item sm={4} md={6} lg={7} className={classes.image} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/auth_image.png)`}}>
             <ScalableTwitterIcon />
           </Grid>
         </Hidden>

@@ -30,6 +30,8 @@ export default function Home() {
   const [timeline, setTimeline] = useState(null);
   const { user } = useSelector((state) => state.user);
 
+  console.log(timeline);
+
   useEffect(async () => {
     let unsubscribe = fetchHomeTimeline(user, setTimeline);
     return () => unsubscribe();
