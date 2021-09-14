@@ -31,6 +31,8 @@ In the app, once you sign up and create an account, you can start posting messag
 - To edit your profile, go to your profile page and click the edit profile button.
 - There's other features that you can try and explore!
 
+<img src="readme_images/gif3.PNG" /> 
+
 ## Pages
 
 There are several pages within the app:
@@ -52,6 +54,8 @@ Since the UI of Twitter is organized by columns, I separated components by prima
 
 - The primary column is the central column that holds important information like timelines and profiles.
 - The secondary is the column to the right that holds extra information like people to follow or an activity feed.
+
+<img src="readme_images/gif2.gif" />
 
 ## More Pictures
 
