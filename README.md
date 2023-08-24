@@ -1,77 +1,92 @@
-# Twitter
+# Twitter-From-Scratch
 
-Check out the demo here: https://ian-chuang.github.io/Twitter/
+Welcome to **Twitter-From-Scratch**, a ground-up implementation of the beloved social media platform, Twitter. Crafted with precision using modern technologies such as ReactJS, Redux, Firebase, and Material UI.
 
-This is a clone of the social media app, Twitter, built completely from scratch with ReactJS, Redux, Firebase, and Material UI.
+Explore the live demo: [Twitter-From-Scratch Demo](https://ian-chuang.github.io/Twitter/)
 
-In the app, once you sign up and create an account, you can start posting messages and viewing other people's tweets.
+<p align="center">
+  <img src="readme_images/showcase1.PNG" alt="App Showcase">
+</p>
 
-<img src="readme_images/showcase1.PNG" /> 
+## Overview
 
-## Main Features
-- Send tweets
-- View a timeline of peoples' tweets
-- Reply to tweets
-- Like and retweet tweets
-- Follow other users
-- Add your own profile picture and header background
-- Add a bio
-- Toggle light and dark mode
-- Activity feed of what other users are doing
-- Follow menu
+This project is a comprehensive reimagining of Twitter, offering an immersive user experience where you can effortlessly create an account, post tweets, and interact with other users' content.
 
-## How to use
+## Key Features
 
-- To tweet either click the blue tweet button in the side navigation, or go to the top the home page and look at the top.
-- To reply to a tweet click on any tweet you see. This will expand the tweet and give an option to reply below it.
-- To like a tweet, click the heart icon below it.
-- To view any user's profile page, click their avatar or name when you see it.
-- To follow a user look at the follow menu on the right or profile page of a user for a follow button.
-- To toggle light and dark themes, click the Toggle Theme button on the navigation.
-- To edit your profile, go to your profile page and click the edit profile button.
-- There's other features that you can try and explore!
+- **Tweet Creation**: Express yourself by composing tweets.
+- **Timeline**: Engage with a dynamic timeline showcasing tweets from users you follow.
+- **Engagement**: Participate by replying, liking, and retweeting.
+- **Connect**: Stay connected and informed by following other users.
+- **Personalization**: Customize your profile with a picture, background, and bio.
+- **Themes**: Adapt to your mood with light and dark themes.
+- **Activity Feed**: Stay updated with users' actions through the activity feed.
+- **User Profiles**: Explore user profiles by clicking avatars or usernames.
+- **Intuitive UI**: Enjoy a well-designed interface that fits various screen sizes.
 
-<img src="readme_images/gif3.gif" /> 
+<p align="center">
+  <img src="readme_images/gif3.gif" alt="App GIF">
+</p>
+
+## Usage Guide
+
+- To create a tweet, click the blue tweet button in the side navigation or use the button at the top of the home page.
+- Reply to tweets by clicking to expand and find the reply option.
+- Like tweets by clicking the heart icon.
+- View user profiles by clicking avatars or usernames.
+- Follow users with the follow button in profiles or the follow menu.
+- Toggle between light and dark themes with the Theme Toggle button in the navigation.
+- Edit your profile by navigating to your profile page and clicking the edit button.
+
+Discover these features and more to enhance your Twitter-From-Scratch experience!
+
+<p align="center">
+  <img src="readme_images/gif1.gif" alt="App GIF">
+</p>
 
 ## Pages
 
-There are several pages within the app:
-- /login
-- /signup 
-- /home (timeline of tweets from people you follow)
-- /explore (timeline of all tweets from everyone)
-- /profile/:username (your individual profile that everyone can see)
-- /settings (your account information)
-- /connect (list of users you can follow)
-- /activity (list of activity that is happening)
-- /tweet/:tweetid (view replies to a tweet)
+Explore various app pages:
 
-## Layout
+- **/login**: Log into your account.
+- **/signup**: Create a new account.
+- **/home**: Personalized timeline of tweets from followed users.
+- **/explore**: Timeline featuring tweets from all users.
+- **/profile/:username**: Your public profile visible to others.
+- **/settings**: Manage your account settings.
+- **/connect**: Discover users to follow.
+- **/activity**: Stay informed about recent actions.
+- **/tweet/:tweetid**: View replies to a specific tweet.
 
-I designed the layout to be dynamic so that it adjusts content as you resize the page.
+## Layout Design
 
-Since the UI of Twitter is organized by columns, I separated components by primary column and secondary column.
+The app's responsive layout elegantly adjusts content as you resize. The interface takes inspiration from Twitter's column-based structure:
 
-- The primary column is the central column that holds important information like timelines and profiles.
-- The secondary is the column to the right that holds extra information like people to follow or an activity feed.
+- **Primary Column**: Central column for vital content like timelines and profiles.
+- **Secondary Column**: Right column for supplementary information, e.g., suggested users and activity feeds.
 
-<img src="readme_images/gif2.gif" />
+<p align="center">
+  <img src="readme_images/gif2.gif" alt="App GIF">
+</p>
 
-## More Pictures
+## More Visuals
 
-<img src="readme_images/showcase2.PNG" /> 
-<img src="readme_images/showcase3.PNG" /> 
-<img src="readme_images/showcase4.PNG" />
-<img src="readme_images/gif1.gif" />
+Dive into the app's visuals:
 
-## To run on your own.
+<p align="center">
+  <img src="readme_images/showcase2.PNG" alt="App Showcase" style="padding: 20px 0;">
+  <img src="readme_images/showcase3.PNG" alt="App Showcase" style="padding: 20px 0;">
+  <img src="readme_images/showcase4.PNG" alt="App Showcase" style="padding: 20px 0;">
+</p>
 
-In the project directory, you can run:
+## Installation
 
-### `yarn start`
+To run the app locally:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Clone this repository.
+2. Navigate to the project directory.
+3. Run this command:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   ```sh
+   yarn start
+   ```
