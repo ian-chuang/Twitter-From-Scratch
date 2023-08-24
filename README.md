@@ -2,7 +2,7 @@
 
 Welcome to **Twitter-From-Scratch**, a ground-up implementation of the beloved social media platform, Twitter. Crafted with precision using modern technologies such as ReactJS, Redux, Firebase, and Material UI.
 
-Explore the live demo: [Twitter-From-Scratch Demo](https://ian-chuang.github.io/Twitter/)
+Explore the live demo: [Twitter-From-Scratch Demo](https://ian-chuang.github.io/Twitter-From-Scratch/)
 
 <p align="center">
   <img src="readme_images/showcase1.PNG" alt="App Showcase">
