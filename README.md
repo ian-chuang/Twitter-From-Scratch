@@ -73,11 +73,17 @@ The app's responsive layout elegantly adjusts content as you resize. The interfa
 
 Dive into the app's visuals:
 
-<p align="center">
-  <img src="readme_images/showcase2.PNG" alt="App Showcase" style="padding: 20px 0;">
-  <img src="readme_images/showcase3.PNG" alt="App Showcase" style="padding: 20px 0;">
-  <img src="readme_images/showcase4.PNG" alt="App Showcase" style="padding: 20px 0;">
-</p>
+<img src="readme_images/showcase2.PNG" alt="App Showcase">
+
+<img src="readme_images/showcase3.PNG" alt="App Showcase">
+
+<img src="readme_images/showcase7.PNG" alt="App Showcase">
+
+<img src="readme_images/showcase4.PNG" alt="App Showcase">
+
+<img src="readme_images/showcase5.PNG" alt="App Showcase">
+
+<img src="readme_images/showcase6.PNG" alt="App Showcase">
 
 ## Installation
 
