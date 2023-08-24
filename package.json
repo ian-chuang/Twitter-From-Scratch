@@ -1,6 +1,6 @@
 {
   "name": "twitter",
-  "homepage": "https://ian-chuang.github.io/Twitter-From-Scratch/",
+  "homepage": "https://ian-chuang.github.io/Twitter/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
