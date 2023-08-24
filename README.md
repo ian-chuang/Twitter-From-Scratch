@@ -4,13 +4,13 @@ Welcome to **Twitter-From-Scratch**, a ground-up implementation of the beloved s
 
 Explore the live demo: [Twitter-From-Scratch Demo](https://ian-chuang.github.io/Twitter-From-Scratch/)
 
-<p align="center">
-  <img src="readme_images/showcase1.PNG" alt="App Showcase">
-</p>
+<img src="readme_images/showcase1.PNG" alt="App Showcase">
 
 ## Overview
 
 This project is a comprehensive reimagining of Twitter, offering an immersive user experience where you can effortlessly create an account, post tweets, and interact with other users' content.
+
+<img src="readme_images/gif4.gif" alt="App GIF">
 
 ## Key Features
 
@@ -24,9 +24,7 @@ This project is a comprehensive reimagining of Twitter, offering an immersive us
 - **User Profiles**: Explore user profiles by clicking avatars or usernames.
 - **Intuitive UI**: Enjoy a well-designed interface that fits various screen sizes.
 
-<p align="center">
-  <img src="readme_images/gif3.gif" alt="App GIF">
-</p>
+<img src="readme_images/gif3.gif" alt="App GIF">
 
 ## Usage Guide
 
@@ -40,9 +38,7 @@ This project is a comprehensive reimagining of Twitter, offering an immersive us
 
 Discover these features and more to enhance your Twitter-From-Scratch experience!
 
-<p align="center">
-  <img src="readme_images/gif1.gif" alt="App GIF">
-</p>
+<img src="readme_images/gif1.gif" alt="App GIF">
 
 ## Pages
 
@@ -65,9 +61,7 @@ The app's responsive layout elegantly adjusts content as you resize. The interfa
 - **Primary Column**: Central column for vital content like timelines and profiles.
 - **Secondary Column**: Right column for supplementary information, e.g., suggested users and activity feeds.
 
-<p align="center">
-  <img src="readme_images/gif2.gif" alt="App GIF">
-</p>
+<img src="readme_images/gif2.gif" alt="App GIF">
 
 ## More Visuals
 
